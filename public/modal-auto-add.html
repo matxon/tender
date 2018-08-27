@@ -1,0 +1,92 @@
+<div id="mymodal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form action="">
+          <table class="table table-sm table-light table-hover">
+            <thead class="thead-light">
+              <tr class="text-center">
+                <th scope="col">Мемлекеттік нөмірі</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr>
+                <td><input type="text" class="form-control form-control-sm" name="auto[]" required></td>
+                <td class="text-right"><i class="far fa-trash-alt"></i></td>
+              </tr>
+              <tr class="addrow">
+                <td colspan=4><a class="btn btn-sm btn-outline-info" href="#">Тағы да...</a><button type="submit" name="template" hidden></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+
+
+      </div>
+      <div class="modal-footer">
+        <button id="" type="button" class="btn btn-secondary btn-sm fst_btn" data-dismiss="modal">Close</button>
+        <button id="" type="button" class="btn btn-primary btn-sm sec_btn">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function init(container) {
+    var modalname = '#mymodal';
+
+    $(container + ' .modal-title').text("Автотехниканың жаңасын енгізу");
+    $(container + ' .fst_btn').text("Жабу");
+    $(container + ' .sec_btn').text("Базаға сақта");
+
+    var submitButton = $(container + ' button').filter('[name="template"]');
+
+    submitButton.click(function (e) {
+      isValid = $(container + ' form')[0].checkValidity();
+
+      if (false === isValid) return true;
+      // true деп қайтармасаң валидацияны көрсетпейді
+      e.preventDefault();
+
+      $.ajax({
+        method: 'POST',
+        url: '/test',
+        data: $(container + ' form').serialize(),
+        success: function (res, sts, xhr) {
+          $(container + ' ' + modalname).modal('hide');
+        },
+        error: function (xhr, sts, err) {
+          alert('Server not response', err);
+        }
+      });
+    });
+
+    $(container + ' .sec_btn').on('click', function () {
+      submitButton.trigger('click');
+    });
+
+    $(container + ' .tbody .btn').click(function () {
+      var tableRow = '<tr><td><input type="text" class="form-control form-control-sm" name="auto[]" required></td>' +
+        '<td class="text-right"><i class="far fa-trash-alt"></i></td></tr>';
+
+      $(container + ' .addrow').before(tableRow);
+
+      return false;
+    });
+
+    $(container + ' .tbody').on("click", "i", function () {
+      $(this).parent().parent().remove();
+    });
+
+    $(container + " " + modalname).modal({ 'show': true, "backdrop": true });
+  }
+
+</script>

@@ -44,19 +44,19 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="#" onclick=showmodal(2)>Home <span class="sr-only">(current)</span></a>
+          <li class="nav-item -active">
+            <a class="nav-link" href="#" onclick="">Home<!-- <span class="sr-only">(current)</span> --></a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
               aria-expanded="false">Деректер
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
-              <a class="dropdown-item" href="#" onclick="handle('', 'modal-pipe-view.html')">Перфотрубалар</a>
-              <a class="dropdown-item" href="#" onclick="handle('', 'modal-auto-view.html')">Автотехникалар</a>
-              <a class="dropdown-item" href="#" onclick="handle('', 'modal-oilfields-view.html')">Кен орындары</a>
+              <a class="dropdown-item" href="#" onclick="handler('', 'modal-pipe-view.html')">Перфотрубалар</a>
+              <a class="dropdown-item" href="#" onclick="handler('', 'modal-auto-view.html')">Автотехникалар</a>
+              <a class="dropdown-item" href="#" onclick="handler('', 'modal-oilfields-view.html')">Кен орындары</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#" onclick="handle('', 'modal-employee-view.html')">Жұмысшы мамандар</a>
+              <a class="dropdown-item" href="#" onclick="handler('', 'modal-employee-view.html')">Жұмысшы мамандар</a>
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -105,7 +105,7 @@
   // modal = new Modal();
   // modal.create();
   // modal.show();
-
+  /*
   modal2 = new Modal({container: 'frame2', title: 'Кодпен жасалған окно', backdrop: true, animation: 'fade', centered: 'modal-dialog-centered', size: 'modal-lg' });
   modal2.create();
   // modal2.show();
@@ -135,9 +135,7 @@
   });
 
   t = new Table([{}],[]);
-
-
-
+  */
 
     </script>
     <script>
@@ -146,7 +144,7 @@
       let pipelength = [];
 
       // -----------------------------------------------------------------------------
-      function handle(num, document) {
+      function handler(num, document) {
         num = num || '';
         let container = '#modal-frame' + num;
 
@@ -166,7 +164,7 @@
       }
 
 // ---------------------------------------------------------------------
-      function showmodal(num) {
+      function showmodal2(num) {
         num = num || '';
         let container = '#modal-frame' + num;
 

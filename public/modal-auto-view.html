@@ -16,8 +16,8 @@
 
       </div>
       <div class="modal-footer">
-        <button id="" type="button" class="btn btn-secondary btn-sm fst_btn_caption" data-dismiss="modal">Close</button>
-        <button id="" type="button" class="btn btn-primary btn-sm sec_btn_caption">Save</button>
+        <button id="" type="button" class="btn btn-secondary btn-sm fst_btn" data-dismiss="modal">Close</button>
+        <button id="" type="button" class="btn btn-primary btn-sm sec_btn">Save</button>
       </div>
     </div>
   </div>
@@ -30,8 +30,8 @@
 
     // осы үшеуін де алып тастау керек сияқты
     $(container + ' .modal-title').text("Автотехникалардың тізімі");
-    $(container + ' .fst_btn_caption').text("Жабу");
-    $(container + ' .sec_btn_caption').text("Жаңасын енгізу");
+    $(container + ' .fst_btn').text("Жабу");
+    $(container + ' .sec_btn').text("Жаңасын енгізу");
 
     $.post('/auto-view', function (data) {
       l = data.length;
@@ -70,6 +70,13 @@
       pagination.render();
       
     })
+
+    $(container + ' .sec_btn').on('click', function() {
+      event.preventDefault();
+      $(container + ' ' + modalname).modal('hide');
+
+      handler(2, 'modal-auto-add.html');
+    });
 
     $(container + ' ' + modalname).modal({ 'show': true, "backdrop": false });
   }

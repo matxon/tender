@@ -9,15 +9,13 @@
       </div>
       <div class="modal-body">
 
-        <form action="">
-        </form>
-
+        <div class="data"></div>
         <div class="pagination"></div>
 
       </div>
       <div class="modal-footer">
-        <button id="" type="button" class="btn btn-secondary btn-sm fst_btn_caption" data-dismiss="modal">Close</button>
-        <button id="" type="button" class="btn btn-primary btn-sm sec_btn_caption">Save</button>
+        <button id="" type="button" class="btn btn-secondary btn-sm fst_btn" data-dismiss="modal">Close</button>
+        <button id="" type="button" class="btn btn-primary btn-sm sec_btn">Save</button>
       </div>
     </div>
   </div>
@@ -29,9 +27,9 @@
     let _ROWS = 15
 
     // осы үшеуін де алып тастау керек сияқты
-    $(container + ' .modal-title').text("Мамандардың тізімі");
-    $(container + ' .fst_btn_caption').text("Жабу");
-    $(container + ' .sec_btn_caption').text("Жаңасын енгізу");
+    $(container + ' .modal-title').text("Кен орындарының тізімі");
+    $(container + ' .fst_btn').text("Жабу");
+    $(container + ' .sec_btn').text("Жаңасын енгізу");
 
     $.post('/oilfields-view', function (data) {
       l = data.length;
@@ -45,8 +43,8 @@
         });
       
       pagination = new Pagination({count: count, current: 1});
+      $(container + ' .data:first').append(table.create());
       $(container + ' .pagination:first').append(pagination.create());
-      $(container + ' form:first').append(table.create());
       table.render();
       pagination.render();
     });
@@ -70,6 +68,13 @@
       pagination.render();
       
     })
+
+    $(container + ' .sec_btn').on('click', function() {
+      event.preventDefault();
+      $(container + ' ' + modalname).modal('hide');
+
+      handler(2, 'modal-oilfield-add.html');
+    });
 
     $(container + ' ' + modalname).modal({ 'show': true, "backdrop": false });
   }

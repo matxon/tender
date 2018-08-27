@@ -51,13 +51,19 @@ app.post('/autoequipments', ( req, res ) => {
 });
 
 app.post('/pipes', ( req, res ) => {
-    mysql.read('SELECT id_pipe, concat(pipe, ", \t", diameter, "mm X ", length, "m") as pipe, length FROM pipes order by pipe', function(result) {
+    mysql.read('SELECT id_pipe, concat(pipe, ", ", diameter, "mm X ", length, "m") as pipe, length FROM pipes order by pipe', function(result) {
         res.send( result );
     });
 });
 
 app.post('/pipenames', ( req, res ) => {
     mysql.read('SELECT pipe FROM pipes group by pipe order by pipe', function(result) {
+        res.send( result );
+    });
+});
+
+app.post('/positions', ( req, res ) => {
+    mysql.read('SELECT position FROM employees group by position order by position', function(result) {
         res.send( result );
     });
 });
