@@ -1,0 +1,101 @@
+<!-- 
+<div id="mymodal" class="modal {fade}" tabindex="-1" role="dialog">                                 
+  <div class="modal-dialog {modal-dialog-centered} {modal-lg}" role="document">                         
+         {fade}                   animation                                                             
+         {modal-lg}               modal size                                                            
+         {modal-dialog-centered}  modal vertical centered                                               
+                                                                                                     
+    <div class="modal-content">                                                                         
+      <div class="modal-header">                                                                      
+TITLE ->                                                                                      
+        <h5 class="modal-title">{Title}</h5>                                             
+TITLE end ->                                                                                      
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">                    
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+modal body ->
+      <div class="modal-body">
+-------------------------------------------------------        
+Modal create options:
+        animation:  boolean         container:  string
+        centered:   boolean
+        size:       string
+        title:      string
+        body:       Object
+        footer:     Object
+methods:
+        create()
+        show()
+        hide()
+------------------------------------------------------
+      </div>
+modal body end ->
+
+footer ->
+      <div class="modal-footer">
+
+        <button id="" type="button" class="btn btn-secondary btn-sm {fst_btn_caption}" data-dismiss="modal">{Close}</button>
+        <button id="" type="button" class="btn btn-primary btn-sm {sec_btn_caption}">{Save}</button>
+             This is a default BUTTON configuration
+             {fst_btn_caption}, {sec_btn_caption}         custum class
+             {Close}, {Save}                              button caption 
+
+      </div>
+footer end ->
+    </div>
+  </div>
+</div> -->
+
+<script>
+  function Modal(opt) {
+    opt = opt || {};
+    var options = {
+      animation: opt.animation ? 'fade' : '',
+      centered: opt.centered ? 'modal-dialog-contered' : '',
+      size: opt.size || 'modal-lg',
+      title: opt.title || 'IT IS TITLE',
+      container: opt.container || 'frame'
+    };
+    
+    var elem, modalelem;
+
+    this.show = function() {
+      modalelem.modal('show');
+    }
+
+    this.hide = function() {
+
+    }
+
+    this.create = function() {
+      elem = document.createElement('div');
+      elem.classList.add(options.container);
+
+      let html = `<div id="mymodal" class="modal ${options.animation}" tabindex="-1" role="dialog">` +
+        `<div class="modal-dialog ${options.centered} ${options.size}" role="document">` +
+        `<div class="modal-content"><div class="modal-header">` +
+        `<h5 class="modal-title">${options.title}</h5>` +
+        `<button type="button" class="close" data-dismiss="modal" aria-label="Close">` +
+        `<span aria-hidden="true">&times;</span> </button> </div>` + 
+        `<div class="modal-body"> </div>` + 
+        `<div class="modal-footer">` + 
+        `</div></div> </div> </div>`
+
+      elem.insertAdjacentHTML('beforeend', html);
+      modalelem = elem.firstElementChild;
+      
+      document.body.appendChild(elem);
+    }
+
+  }
+
+  modal = new Modal();
+  modal.create();
+  modal.show();
+
+  // `<button id="" type="button" class="btn btn-secondary btn-sm ${fst_btn_caption}" data-dismiss="modal">${Close}</button>` +
+  // `<button id="" type="button" class="btn btn-primary btn-sm ${sec_btn_caption}">${Save}</button>` +
+
+</script>
