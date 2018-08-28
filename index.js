@@ -11,6 +11,87 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 
 app.use( express.static( 'public' ) );
 
+var escapeHtml = (function () {
+    'use strict';
+    var chr = { '"': '&quot;', '&': '&amp;', '<': '&lt;', '>': '&gt;' };
+    return function (text) {
+        return text.replace(/[\"&<>]/g, function (a) { return chr[a]; });
+    };
+}());
+
+app.post('/employeeInsert', upload.array(), ( req, res ) => {
+    let data = new Array();
+
+    for (let i = 0; i < req.body.name.length; i++) {
+        data.push({name: escapeHtml(req.body.name[i]), position: escapeHtml(req.body.position[i])});
+    }
+
+    mysql.insert('INSERT INTO employees SET ?', data, function(result) {
+        console.log(result);
+    });
+    res.json(req.body);
+});
+
+app.post('/oilfieldInsert', upload.array(), ( req, res ) => {
+    let data = new Array();
+
+    for (let i = 0; i < req.body.oilfieldname.length; i++) {
+        data.push({oilfieldname: escapeHtml(req.body.oilfieldname[i])});
+    }
+
+    mysql.insert('INSERT INTO oilfields SET ?', data, function(result) {
+        console.log(result);
+    });
+    res.json(req.body);
+});
+
+app.post('/autoInsert', upload.array(), ( req, res ) => {
+    let data = new Array();
+
+    for (let i = 0; i < req.body.auto.length; i++) {
+        data.push({gosnumber: escapeHtml(req.body.auto[i])});
+    }
+
+    mysql.insert('INSERT INTO autoequipments SET ?', data, function(result) {
+        console.log(result);
+    });
+    res.json(req.body);
+});
+
+app.post('/pipeInsert', upload.array(), ( req, res ) => {
+    let data = new Array();
+
+    for (let i = 0; i < req.body.pipe.length; i++) {
+        data.push({pipe: escapeHtml(req.body.pipe[i]), diameter: escapeHtml(req.body.diameter[i]), length: escapeHtml(req.body.length[i])});
+    }
+
+    mysql.insert('INSERT INTO pipes SET ?', data, function(result) {
+        console.log(result);
+    });
+    res.json(req.body);
+});
+
+app.post('/clientInsert', upload.array(), ( req, res ) => {
+    let data = new Array();
+
+    for (let i = 0; i < req.body.name.length; i++) {
+        data.push({name: escapeHtml(req.body.name[i]), information: escapeHtml(req.body.information[i])});
+    }
+
+    mysql.insert('INSERT INTO clients SET ?', data, function(result) {
+        console.log(result);
+    });
+    res.json(req.body);
+});
+
+// -----------------------------------------------------------------------------
+
+app.post('/client-view', ( req, res ) => {
+    mysql.read(`SELECT name, information FROM clients order by name`, function(result) {
+        res.send( result );
+    });
+});
+
 app.post('/pipe-view', ( req, res ) => {
     mysql.read(`SELECT pipe, diameter, length FROM pipes order by pipe, diameter, length`, function(result) {
         res.send( result );
@@ -70,19 +151,6 @@ app.post('/positions', ( req, res ) => {
 
 app.post('/test', upload.array(), ( req, res ) => {
     console.log( req.body );
-    res.json(req.body);
-});
-
-app.post('/employeeUp', upload.array(), ( req, res ) => {
-    let data = new Array();
-
-    for (let i = 0; i < req.body.name.length; i++) {
-        data.push({name: req.body.name[i], position: req.body.position[i]});
-    }
-
-    mysql.insert('INSERT INTO employees SET ?', data, function(result) {
-        console.log(result);
-    });
     res.json(req.body);
 });
 

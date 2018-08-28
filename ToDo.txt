@@ -1,0 +1,19 @@
+// *****************************************************************************
+    app.post('/employeeInsert', upload.array(), ( req, res ) => {
+        let data = new Array();
+
+        for (let i = 0; i < req.body.name.length; i++) {
+            data.push({name: req.body.name[i], position: req.body.position[i]});
+        }
+
+        mysql.insert('INSERT INTO employees SET ?', data, function(result) {
+            console.log(result);
+        });
+        res.json(req.body);
+    });
+
+    осы жерде келіп түскен мәліметтерге тексеру жүргізу қажет:
+    1. Пустой болмауы керек, өйткені қате шығып программа тоқтап қалады
+    2. Қолданушы енгізген мәліметті экранирование жасау керек. [SQL-инъекция]
+
+// *****************************************************************************

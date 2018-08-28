@@ -84,7 +84,7 @@ function Table(options) { //data, head, style, thstyle, tdstyle) {
                 for(var key in data[i]) { 
                     html += `<td class="${tdstyle[index]}">` + data[i][key] + '</td>'; index++;
                 }
-                if (mode == 'edit') html += `<td class="text-right"><i class="far fa-edit"></i></td>`;
+                if (mode == 'edit') html += `<td class="text-right"><i class="far fa-trash-alt"></i><i class="far fa-edit"></i></td>`;
             }
             html += '</tr>';
         }

@@ -46,7 +46,7 @@
   function init(container) {
     var modalname = '#mymodal';
 
-    $(container + ' .modal-title').text("Трубаның жаңа түрін енгізу");
+    $(container + ' .modal-title').text("Жаңа маманды енгізу");
     $(container + ' .fst_btn').text("Жабу");
     $(container + ' .sec_btn').text("Базаға сақта");
 
@@ -69,7 +69,7 @@
 
       $.ajax({
         method: 'POST',
-        url: '/employeeUp',
+        url: '/employeeInsert',
         data: $(container + ' form').serialize(),
         success: function (res, sts, xhr) {
           $(container + ' ' + modalname).modal('hide');

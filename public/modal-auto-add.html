@@ -19,7 +19,7 @@
             </thead>
             <tbody class="tbody">
               <tr>
-                <td><input type="text" class="form-control form-control-sm" name="auto[]" required></td>
+                <td><input type="text" class="form-control form-control-sm" autocomplete="off" name="auto[]" required></td>
                 <td class="text-right"><i class="far fa-trash-alt"></i></td>
               </tr>
               <tr class="addrow">
@@ -43,7 +43,7 @@
   function init(container) {
     var modalname = '#mymodal';
 
-    $(container + ' .modal-title').text("Автотехниканың жаңасын енгізу");
+    $(container + ' .modal-title').text("Жаңа автотехниканы енгізу");
     $(container + ' .fst_btn').text("Жабу");
     $(container + ' .sec_btn').text("Базаға сақта");
 
@@ -58,7 +58,7 @@
 
       $.ajax({
         method: 'POST',
-        url: '/test',
+        url: '/autoInsert',
         data: $(container + ' form').serialize(),
         success: function (res, sts, xhr) {
           $(container + ' ' + modalname).modal('hide');
@@ -74,7 +74,7 @@
     });
 
     $(container + ' .tbody .btn').click(function () {
-      var tableRow = '<tr><td><input type="text" class="form-control form-control-sm" name="auto[]" required></td>' +
+      var tableRow = '<tr><td><input type="text" class="form-control form-control-sm" autocomplete="off" name="auto[]" required></td>' +
         '<td class="text-right"><i class="far fa-trash-alt"></i></td></tr>';
 
       $(container + ' .addrow').before(tableRow);

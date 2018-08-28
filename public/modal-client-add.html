@@ -13,17 +13,15 @@
           <table class="table table-sm table-light table-hover">
             <thead class="thead-light">
               <tr class="text-center">
-                <th scope="col" class="w-50">Атауы</th>
-                <th scope="col">Диаметрі</th>
-                <th scope="col">Ұзындығы</th>
+                <th scope="col" class="w-25">Мекеменің аты</th>
+                <th scope="col">Қосымша мәліметтер</th>
                 <th scope="col"></th>
               </tr>
             </thead>
             <tbody class="tbody">
               <tr>
-                <td><input type="text" class="form-control form-control-sm" list="pipes_list" autocomplete="off" name="pipe[]" required></td>
-                <td><input type="number" class="form-control form-control-sm text-right" name="diameter[]" step="1" min="50" max="120" required></td>
-                <td><input type="number" class="form-control form-control-sm text-right" name="length[]" step="0.1" min="0.1" max="6" required></td>
+                <td><input type="text" class="form-control form-control-sm" autocomplete="off" name="name[]" required></td>
+                <td><input type="text" class="form-control form-control-sm" autocomplete="off" name="information[]" required></td>
                 <td class="text-right"><i class="far fa-trash-alt"></i></td>
               </tr>
               <tr class="addrow">
@@ -31,7 +29,7 @@
               </tr>
             </tbody>
           </table>
-          <datalist id="pipes_list" class="current"></datalist>
+          <datalist id="position_list" class="current"></datalist>
         </form>
 
 
@@ -48,13 +46,13 @@
   function init(container) {
     var modalname = '#mymodal';
 
-    $(container + ' .modal-title').text("Трубаның жаңа түрін енгізу");
+    $(container + ' .modal-title').text("Сатып алушыны енгізу");
     $(container + ' .fst_btn').text("Жабу");
     $(container + ' .sec_btn').text("Базаға сақта");
 
-    $.post('/pipenames', function (data) {
+    $.post('/positions', function (data) {
       data.forEach(element => {
-        $(container + ' .current:first').append(`<option value="${element.pipe}">`);
+        $(container + ' .current:first').append(`<option value="${element.position}">`);
       });
     });
 
@@ -71,8 +69,7 @@
 
       $.ajax({
         method: 'POST',
-        url: '/pipeInsert',
-        // url: '/test',
+        url: '/clientInsert',
         data: $(container + ' form').serialize(),
         success: function (res, sts, xhr) {
           $(container + ' ' + modalname).modal('hide');
@@ -88,9 +85,8 @@
     });
 
     $(container + ' .tbody .btn').click(function () {
-      var tableRow = '<tr><td><input type="text" class="form-control form-control-sm" list="pipes_list" autocomplete="off" name="pipe[]" required></td>' +
-        '<td><input type="number" class="form-control form-control-sm text-right" name="diameter[]" step="1" min="50" max="120" required></td>' +
-        '<td><input type="number" class="form-control form-control-sm text-right" name="length[]" step="0.1" min="0.1" max="6" required></td>' +
+      var tableRow = '<tr><td><input type="text" class="form-control form-control-sm" name="name[]" autocomplete="off" required></td>' +
+        '<td><input type="text" class="form-control form-control-sm" autocomplete="off" name="information[]" required></td>' +
         '<td class="text-right"><i class="far fa-trash-alt"></i></td></tr>';
 
       $(container + ' .addrow').before(tableRow);
