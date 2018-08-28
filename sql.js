@@ -30,6 +30,28 @@ module.exports.read = function(sql, cb) {
     });
 }
 
+module.exports.insert = function(sql, data, cb) {
+    pool.getConnection(function(err, connection) {
+        if(err) {
+            console.log(err); 
+            cb({error: 'error'});
+            return;
+        }
+
+        data.forEach( function( item ) {
+            connection.query( sql, item, function( error, result, fields ) {
+                if( error ) {
+                    console.log( error );
+                    cb({error: 'error'});
+                    return;
+                }
+                cb(result);
+            });
+        });
+        connection.release();
+    });
+}
+
 
 /*
 var data = [ 

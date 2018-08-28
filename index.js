@@ -73,6 +73,19 @@ app.post('/test', upload.array(), ( req, res ) => {
     res.json(req.body);
 });
 
+app.post('/employeeUp', upload.array(), ( req, res ) => {
+    let data = new Array();
+
+    for (let i = 0; i < req.body.name.length; i++) {
+        data.push({name: req.body.name[i], position: req.body.position[i]});
+    }
+
+    mysql.insert('INSERT INTO employees SET ?', data, function(result) {
+        console.log(result);
+    });
+    res.json(req.body);
+});
+
 // тестілегеннен қалып қойды
 app.get('/quickstart', ( req, res ) => {
     console.log( req.query.name );

@@ -35,12 +35,13 @@
 
     $.post('/auto-view', function (data) {
       l = data.length;
-      count = Math.round(l / _ROWS); 
+      count = Math.ceil(l / _ROWS); 
 
       table = new Table(
         { data: data, 
           head: ["#", "Мемлекеттік нөмірі"],
           tdstyle: [ '', 'text-right'],
+          mode: 'edit',
           rows: _ROWS
         });
       

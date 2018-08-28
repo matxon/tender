@@ -34,12 +34,14 @@
 
     $.post('/employee-view', function (data) {
       l = data.length;
-      count = Math.round(l / _ROWS); 
+      count = Math.ceil(l / _ROWS); // Мен алдында Math.round() пайдаланғанмын
+      // ол дұрыс емес екен
 
       table = new Table(
         { data: data, 
           head: ["Аты-жөні", "Лауазымы"],
           tdstyle: [ '', ''],
+          mode: 'edit',
           rows: _ROWS
         });
       
