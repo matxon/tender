@@ -86,6 +86,34 @@ app.post('/clientInsert', upload.array(), ( req, res ) => {
 
 // -----------------------------------------------------------------------------
 
+app.post('/releaseInsert', upload.array(), ( req, res ) => {
+    // date, autoequipment, employee
+    // table: pipe [], quantity[]
+    let data = new Array();
+    let insertId = 0;
+
+    console.log([{id_auto: req.body.autoequipment, id_employee: req.body.employee, date: req.body.date}]);
+    
+    mysql.insert('INSERT INTO releaseAction SET ?', [{id_auto: req.body.autoequipment, id_employee: req.body.employee, date: req.body.date}], function(result) {
+        insertId = result.insertId;
+        console.log(result);
+        
+        for (let i = 0; i < req.body.pipe.length; i++) {
+            data.push({ id_release: insertId, id_pipe: escapeHtml(req.body.pipe[i]), qty: escapeHtml(req.body.quantity[i])});
+        }
+        console.log(data);
+        
+        mysql.insert('INSERT INTO released SET ?', data, function(result) {
+            console.log(result);
+        });
+    });
+
+
+    res.json(req.body);
+});
+
+// -----------------------------------------------------------------------------
+
 app.post('/client-view', ( req, res ) => {
     mysql.read(`SELECT name, information FROM clients order by name`, function(result) {
         res.send( result );
