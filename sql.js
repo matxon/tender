@@ -4,7 +4,7 @@
         connectionLimit : 10,
         host: 'localhost',
         user: 'root',
-        password: 'DbyljeC3',
+        password: '123',
         database: 'pipe'
     });
 
