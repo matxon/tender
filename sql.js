@@ -3,7 +3,7 @@
     // var pool = mysql.createConnection({
         connectionLimit : 10,
         host: 'localhost',
-        user: 'root',
+        user: 'user',
         password: '123',
         database: 'pipe'
     });
