@@ -1,6 +1,6 @@
 # Мәліметтер Базасы
 
-ОС FreeBSD, Linux, Mac, Windows
+OS FreeBSD, Linux, Mac, Windows
 
 ## Getting Started
 
