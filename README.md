@@ -11,7 +11,7 @@ Mysql және NODE.JS орнатылған болуы керек
 папкасына кіріп төмендегі команданы орындау қажет:
 
 ```
-clone https://github.com/matxon/tender.git
+git clone https://github.com/matxon/tender.git
 cd tender
 
 npm install

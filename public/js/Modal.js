@@ -14,7 +14,7 @@ function Modal(opt) {
     backdrop: opt.backdrop ? true : false,                    // boolean
     animation: opt.animation || '',                           // string
     centered: opt.centered ? 'modal-dialog-centered' : '',    // string
-    size: opt.size || 'modal-lg',                             // string
+    size: opt.size || 'modal-xl',                             // string
     title: opt.title || 'IT IS TITLE',                        // string
     container: opt.container || 'frame'                       // string
   };
