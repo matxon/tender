@@ -41,8 +41,15 @@
 
 <script>
 
-    /*  Бұл localstorage әзірге пайдаланылып тұрған жоқ */
-    let localstorage;
+$(document).ready(function() {
+
+    /*  егер айнымалының алдына let, var, const директиваларын қоймайтын болсаң онда
+     *  сол айнымалы global объектісіне барып жазылады.
+     *  Функцияларды да global объектісіне дәл осылай жазуға болады
+     *      f_name = function() {...}
+     *
+     *  Бұл localstorage әзірге пайдаланылып тұрған жоқ */
+    let localstorage = null;
 
     /*  Бұл функцияны қолданыстан шығарып тастап жатырмын */
     function _handler(container, document) {
@@ -60,7 +67,7 @@
     }
 
     /*  Бұл функцияны қолданыстан шығарып тастап жатырмын */
-    function getHtml(container, url, data) {
+    getHtml = function(container, url, data) {
 
         $.ajax({
             url: url,
@@ -76,10 +83,12 @@
     }
 
 
-    /*  getPage( container, url, data)  функция url адресі бойынша серверден келген html құжатты #container-дің
+    /* global function
+     *
+     * getPage( container, url, data)  функция url адресі бойынша серверден келген html құжатты #container-дің
      *  ішіне орналастырады. data {} - серверге жіберілетін мәлімет
      */
-    function getPage(container, url, data) {
+    getPage = function (container, url, data) {
         container = container || 'main';
         data = data || '';
 
@@ -109,30 +118,29 @@
      *  main( func1 ) <---- modal( func1m ) <----- modal( func2m )
      *    pop()                pop()              pop()
      */
-    let duty_function = [];
+    duty_function = [];
 
-    (function () {
-        // Бұл навбарды әзірге ажыратып қойдым
-        //        $('ul.nav>li.nav-item>a').click(function () {
-        //            $('ul.nav>li.nav-item>a').removeClass('active');
-        //            $(this).addClass('active');
-        //        })
+    // Бұл навбарды әзірге ажыратып қойдым
+    //        $('ul.nav>li.nav-item>a').click(function () {
+    //            $('ul.nav>li.nav-item>a').removeClass('active');
+    //            $(this).addClass('active');
+    //        })
 
-        /*  Иконкаларды рендеринг жасау */
-        feather.replace();
+    /*  Иконкаларды рендеринг жасау */
+    feather.replace();
 
-        /*  Менде навбар javascript арқылы шақырып алады керекті беттерді
-         *  яғни менюдегі сілтемелрді басқанда серверге адресный строка арқылы GET запрос жіберілмейді
-         *  ол деген сервер браузердің қай бетте тұрғанын білмейді деген сөз.
-         *  Сондықтан клиент өзі қадағалап отырады, оны реттеудің бір ғана жолы javascript арқылы
-         *  сол менюді '.active' класына кіргізуі керек
-         */
-        $('#navbarNav>.navbar-nav>.nav-item').click(function () {
-            $('#navbarNav>.navbar-nav>.nav-item').removeClass('active');
-            $(this).addClass('active');
-        })
-    })()
+    /*  Менде навбар javascript арқылы шақырып алады керекті беттерді
+     *  яғни менюдегі сілтемелрді басқанда серверге адресный строка арқылы GET запрос жіберілмейді
+     *  ол деген сервер браузердің қай бетте тұрғанын білмейді деген сөз.
+     *  Сондықтан клиент өзі қадағалап отырады, оны реттеудің бір ғана жолы javascript арқылы
+     *  сол менюді '.active' класына кіргізуі керек
+     */
+    $('#navbarNav>.navbar-nav>.nav-item').click(function () {
+        $('#navbarNav>.navbar-nav>.nav-item').removeClass('active');
+        $(this).addClass('active');
+    })
 
+})
 </script>
 
 </body>
