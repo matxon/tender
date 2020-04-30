@@ -1,0 +1,170 @@
+<!-- Modal -->
+<div class="modal fade" id="modal-add-customer" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Новый Заказчик</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- ******************************************************************************* -->
+
+                <form id="modal-add-customer-form" action="" method="POST">
+
+                    <div class="form-group">
+                        <div class="row">
+
+                            <label class="col-2 col-form-label text-right font-weight-bold" for="customer_name">Компания</label>
+                            <div class="col-4">
+                                <input name="customer_name" id="customer_name" placeholder="" type="text" class="form-control form-control-sm" required><small class="text-info"></small>
+                            </div>
+
+                            <label class="col-2 col-form-label text-right font-weight-bold" for="web_address">WEB адрес</label>
+                            <div class="col-3">
+                                <input name="web_address" type="text" id="web_address" class="form-control form-control-sm" placeholder=""><small class="text-info"></small>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-2 col-form-label text-right font-weight-bold" for="profile">Деятельность</label>
+                            <div class="col-9">
+                                <input name="profile" type="text" id="profile" class="form-control form-control-sm"><small class="text-info"></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-2 col-form-label text-right font-weight-bold" for="address">Адрес доставки</label>
+                            <div class="col-9">
+                                <input name="address" type="text" class="form-control form-control-sm" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="table table-sm table-borderless">
+                        <thead class="thead-dark">
+                        <tr class="row text-center">
+                            <th class="col-3">Должность</th>
+                            <th class="col-3">ФИО</th>
+                            <th class="col-2">email</th>
+                            <th class="col">моб.</th>
+                            <th class="col">тел.</th>
+                            <!--<th></th>-->
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="row">
+                            <td class="col-3"><input name="position[]" type="text" class="form-control form-control-sm"></td>
+                            <td class="col-3"><input name="name[]" type="text" class="form-control form-control-sm" required></td>
+                            <td class="col-2"><input name="email[]" type="text" class="form-control form-control-sm"></td>
+                            <td class="col"><input name="mobile[]" type="text" class="form-control form-control-sm"></td>
+                            <td class="col">
+                                <div class="input-group input-group-sm">
+                                    <input name="tel[]" type="text" class="form-control form-control-sm">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><span data-feather="trash-2"></span></span>
+                                    </div>
+                                </div>
+                            </td>
+                            <!--<td class="align-middle"><span data-feather="trash-2"></span></td>-->
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="7" class="text-right">
+                                <button type="button" class="btn btn-sm btn-outline-secondary mt-2">еще...</button>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                    <button type="submit" id="submit-modal-add-customer-form" name="submit" hidden></button>
+                </form>
+                <!-- ******************************************************************************* -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+
+        let modalId = '#modal-add-customer';
+        let modalUrl = '/customer-add';
+        let submitBtn = '#submit-modal-add-customer-form';
+        let formId = '#modal-add-customer-form';
+
+
+        feather.replace();
+
+        $(`${modalId} tfoot td>.btn`).click( function() {
+            tableRow = "<tr class='row'><td class='col-3'><input name='position[]' type='text' class='form-control form-control-sm'></td>" +
+                '<td class="col-3"><input name="name[]" type="text" class="form-control form-control-sm" required></td>' +
+                '<td class="col-2"><input name="email[]" type="text" class="form-control form-control-sm"></td>' +
+                '<td class="col"><input name="mobile[]" type="text" class="form-control form-control-sm"></td>' +
+                '<td class="col"><div class="input-group input-group-sm"><input name="tel[]" type="text" class="form-control form-control-sm">' +
+                '<div class="input-group-append"><span class="input-group-text"><span data-feather="trash-2"></span></span></div></div></td></tr>';
+            $(`${modalId} tbody`).append(tableRow);
+
+            feather.replace();
+        });
+
+
+        $(`${modalId} tbody`).on("click", "svg", function() {
+            $(this).parent().parent().parent().parent().parent().remove();
+        });
+
+        let submitButton = $(submitBtn).click(function (e) {
+
+            isValid = $(formId)[0].checkValidity();
+
+            if (false === isValid) return true;            // true деп қайтармасаң валидацияны көрсетпейді
+            e.preventDefault();
+
+            save.prop('disabled', true);
+            $.post({
+                url: modalUrl,
+                data: $(formId).serialize(),
+                success: function (res, sts, xhr) {
+                   /* Бұл жерде кезекші функцияны орындаймыз, ал форма жабылған кезде
+                    * оны стектен алып тастаймыз. Міне енді дұрыс болған сияқты */
+                    duty_function[duty_function.length - 1](res);
+                    $(modalId).modal('hide');
+                },
+                error: function (xhr, sts, err) {
+                    save.prop('disabled', false);
+                    alert('Server not response', err);
+                }
+            });
+        });
+
+        let save = $(`${modalId} .modal-footer>.btn-outline-primary`).on('click', function () {
+            submitButton.trigger('click');
+        });
+
+        $(modalId).modal('show');
+        console.log('modal-add-customer АШылған кездегі duty_function');
+        console.log(duty_function);
+
+        /* Кезекші функцияны стектен алып тастау, өйткені Close арқылы жабылғанда
+         * бұл функцияны арындаудың қажеті жоқ.
+         * Save арқылы шыққандағы жоғарыда тұр, ал мынау Close арқылы шыққандағысы */
+        $(modalId).on('hidden.bs.modal', function () {
+            $(modalId).parent().html(null);
+            duty_function.pop();
+            console.log('modal-add-customer ЖАБылған кездегі duty_function');
+            console.log(duty_function);
+        });
+
+    })()
+
+</script>

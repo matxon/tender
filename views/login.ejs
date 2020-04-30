@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.6">
+    <link rel="icon" href="./img/favicon.png">
+    <title><% title %></title>
+
+    <link rel="canonical" href="localhost:3000">
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+  </head>
+  <body>
+
+    <style type="text/css">
+      body {
+          background-color: #f5f5f5;
+          padding-top: 5rem;
+      }
+
+      #main_login {
+          height: 100%;
+      }
+
+      #effect {
+          display: none;
+      }
+
+      .form-signin {
+          max-width: 360px;
+          width: 360px;
+          padding: 19px 29px 29px;
+          background-color: #fff;
+          border: 1px solid #e5e5e5;
+          -webkit-border-radius: 5px;
+          -moz-border-radius: 5px;
+          border-radius: 5px;
+          -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+          -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+          box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+
+      .form-signin .input-group {
+          margin-bottom: 15px;
+      }
+
+      
+      h2 {
+          margin: 10px 0;
+      }
+    </style>
+
+
+<div id="main_login" class="container d-flex align-items-center justify-content-center">
+    <div id="effect" style="display: block;">
+        <form class="form-signin" action="" method="POST" autocomplete="off">
+            <div style="text-align: center;">
+                <img src="../img/help-desk-icon.png" width="128">
+                <h2 class="text-secondary">БАЗА ДАННЫХ</h2>
+                <p class="text-muted">Авторизация пользователя</p><br>
+            </div>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><span data-feather="user"></span></span>
+              </div>
+              <input id="email" name="email" autocomplete="off" class="form-control" placeholder="email" type="text">
+            </div>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><span data-feather="key"></span></span>
+              </div>  
+              <input id="password" name="password" class="form-control" placeholder="password" type="password">
+            </div>
+            <div class="checkbox" style="text-align: center;">
+                <label>
+                    <input id="mc" name="remember_me" value="1" type="checkbox"> Запомнить меня
+                </label>
+            </div>
+            <input type="submit" name="submit" class="btn btn-lg btn-primary btn-block" value="Войти">
+
+            <!--hr style=" margin: 10px; "-->
+        </form>
+    </div>
+</div>
+
+<script src="../js/jquery.min.js"></script>
+<script src="../js/feather-icons/feather.min.js"></script>
+<script src="../js/jquery-ui.js"></script>
+
+<script>
+
+$(document).ready(function() {
+
+  feather.replace();
+
+  $("#effect").hide().fadeIn(500);
+
+  $('body').on('click', 'input.btn', function(event) {
+    event.preventDefault();
+
+    $.ajax({
+      type: "POST",
+      url: "/login",
+      data: $('form').serialize(),
+      success: function(data){
+        console.log(data);
+        if (data == 'true') {
+          location = "/";
+          //location.reload(true);
+        } else {
+          $('#password').val('');
+          $( "#effect" ).effect( 'shake', 500 );    
+        }
+      }
+    });
+  });
+});
+
+</script>
+</body>
+</html>

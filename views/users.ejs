@@ -1,0 +1,91 @@
+<style media="screen">
+    table > tbody > tr {
+        cursor: pointer;
+    }
+</style>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Пользователи</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addUser()">New</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+        </div>
+
+        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+            <span data-feather="calendar"></span>
+            This week
+        </button>
+    </div>
+</div>
+<!-- <h5>Открытые заказы <small class="text-muted"> Заказды қалай таңдайтынын сұрау керек</small></h5> -->
+<div class="">
+    <table id="userstable" class="display table-sm">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Имя пользователя</th>
+            <th>электронный адрес</th>
+            <th>Предприятие</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+
+<div id="modal_container"></div>
+
+<script>
+
+
+    function addUser() {
+        duty_function.push(users_after_close);
+        getPage('modal_container', 'modal-add-user');
+        console.log('command: open( modal-ADD-user )');
+    }
+
+    function editUser(arg) {
+        duty_function.push(users_after_close);
+        getPage('modal_container', 'modal-edit-user', arg);
+        console.log('command: open( modal-EDIT-user )');
+    }
+
+    function table_cb() {
+        $(`#userstable tr`).click( function () {
+            editUser($(this).find('td').first().text());
+        });
+    }
+
+    function users_after_close(data) {
+        console.log('execute request_after_close from users.ejs')
+        users_table.ajax.reload(table_cb);
+    }
+
+(function()  {
+
+    let table = '#userstable';
+
+    feather.replace();
+
+
+    users_table = $(table).DataTable({
+        //"lengthChange": false,
+        "stateSave": true,
+        "lengthMenu": [7, 15, 19],
+        "processing": true,
+        "serverSide": false,
+        "ajax": {
+            "url": "/users-view",
+            "type": "POST"
+        },
+        "columns": [
+            {"data": "user_id"},
+            {"data": "user_name"},
+            {"data": "email"},
+            {"data": "company_name"}
+        ],
+        "initComplete": table_cb
+    });
+
+})()
+</script>

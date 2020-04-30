@@ -1,0 +1,24 @@
+<nav class="navbar navbar-dark navbar-expand fixed-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-sm1-3 col-md1-2 mr-0" href="/">
+        <img src="./img/logo.png" alt="">Zhaltur-Atyrau
+    </a>
+    <div class="container">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <% for(i = 0; i < nav.item.length; i++) { %>
+            <li class="nav-item">
+                <a class="nav-link" onclick="getPage('', '<%= nav.script[i] %>')"><%= nav.item[i] %></a> <!--<span class="sr-only">(current)</span></a>-->
+            </li><% }%>
+        </ul>
+    </div>
+    <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> -->
+    </div>
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" href="javascript:void(0)">Sign out</a>
+        </li>
+    </ul>
+</nav>

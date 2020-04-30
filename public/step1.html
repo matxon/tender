@@ -1,0 +1,39 @@
+<div class="form-group">
+    <div class="row">
+        <label class="col-1 col-form-label text-right font-weight-bold" for="tender_id">Заявка</label>
+        <div class="col-9">
+            <select class="form-control form-control-sm selectpicker" data-live-search="true" id="tender_id" name="tender_id" required>
+                <option value="">Chose...</option>
+            </select>
+        </div>
+    </div>
+    <div class="sr-only input-group input-group-sm mt-2">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroupFileAddon01">Загрузить файл</span>
+        </div>
+        <div class="custom-file col-9">
+            <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+            <label class="custom-file-label" for="inputGroupFile01">Файл</label>
+        </div>
+    </div>
+</div>
+
+<script>
+    $.ajax({
+        type: "POST",
+        url: "/tenders-view",
+        success: function(res){
+
+            data = res.data;
+            var option = "<option value=''>Chose...</option>";
+
+            for (i=0; i<data.length; i++) {
+                option = option + "<option value='" + data[i].tender_id + "'>" + data[i].tender_name + "</option>";
+            }
+
+            $('#tender_id').html(option);
+
+            $('#tender_id').selectpicker();
+        }
+    });
+</script>

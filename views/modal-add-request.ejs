@@ -1,0 +1,207 @@
+<!-- Modal -->
+<div class="modal fade" id="modal-add-request" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Новая Заявка </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- ******************************************************************************* -->
+
+                <form id="modal-add-request-form" action="" method="POST">
+
+                    <div class="form-group">
+                        <!--<input type="text" class="d-none" name="tender_id" value="">-->
+                        <!--<input type="text" class="d-none" name="link_tender_id" value="">-->
+                        <div class="row">
+                            <label class="col-1 col-form-label text-right font-weight-bold" for="start_date">Дата</label>
+                            <div class="col-2">
+                                <input name="start_date" id="start_date" type="date" class="form-control form-control-sm" value="" required>
+                            </div>
+
+                            <label class="col-1 col-form-label text-right font-weight-bold" for="company_id">Компания</label>
+                            <div class="col-3">
+                                <select class="form-control form-control-sm selectpicker" data-style="btn-secondary" id="company_id" name="company_id" value="" required>
+                                    <option value="">...</option>
+                                    <% for (i = 0; i < company.length; i++) { -%>
+                                    <option value="<%=company[i].company_id_%>"><%= company[i].company_name %></option><% } %>
+                                </select>
+                            </div>
+
+                            <label class="col-2 col-form-label text-right font-weight-bold" for="user_id">Менеджер</label>
+                            <div class="col-3">
+                                <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-secondary" id="user_id" name="user_id" required>
+                                    <option value="">...</option>
+                                    <% for (i = 0; i < user.length; i++) { -%>
+                                    <option value="<%=user[i].user_id_%>"><%= user[i].user_name %></option><% } %>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-1 col-form-label text-right font-weight-bold" for="end_date">Срок</label>
+                            <div class="col-2">
+                                <input name="end_date" id="end_date" placeholder="" type="date" class="form-control form-control-sm" value="">
+                            </div>
+                            <label class="col-1 col-form-label text-right font-weight-bold" for="customer_id">Заказчик</label>
+                            <div class="col-3 input-group input-group-sm">
+                                <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-secondary" id="customer_id" name="customer_id" value="" required>
+                                    <option value="">...</option>
+                                    <% for (i = 0; i < customer.length; i++) { -%>
+                                    <option value="<%=customer[i].customer_id_%>"><%=customer[i].customer_name %></option><% } %>
+                                </select>
+                                <div class="input-group-append" id="customer-add">
+                                    <button class="btn btn-sm btn-outline-secondary" type="button">...</button>
+                                </div>
+                            </div>
+                            <label class="col-2 col-form-label text-right font-weight-bold" for="contact_id">Заявку отправил</label>
+                            <div class="col-3">
+                                <select class="form-control form-control-sm selectpicker" data-style="btn-secondary" id="contact_id" name="contact_id" required>
+                                    <option value="">...</option>
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-1 col-form-label text-right font-weight-bold" for="tender_name">Закуп</label>
+                            <div class="col-10">
+                                <input name="tender_name" type="text" id="tender_name" class="form-control form-control-sm" value="" required>
+                                <small class="text-info"></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submit-modal-add-request-form" name="submit" hidden></button>
+                </form>
+                <!-- ******************************************************************************* -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+(function () {
+
+    let modalUrl    = '/request-add';
+    let modalId      = '#modal-add-request';
+    let formId     = '#modal-add-request-form';
+    let submitBtn   = '#submit-modal-add-request-form';
+    let customerSelect = '#customer_id';
+    let contactSelect = '#contact_id';
+    let btnCustomerAdd = '#customer-add';
+
+    add_after_close = function(data) {
+
+        console.log('execute add_after_close() from modal_add_request.ejs')
+
+        $(customerSelect).append(`<option value='${data.customer_id}'>${data.customer_name}</option>`);
+        $(customerSelect).selectpicker('refresh');
+        $(customerSelect).selectpicker('val', data.customer_id);
+        $(customerSelect).trigger('change');
+    }
+
+    update_after_close = function(data) {
+
+        console.log('execute update_after_close() from modal_add_request.ejs')
+
+        $(`${customerSelect} option[value='${data.customer_id}']`).html(data.customer_name);
+        $(customerSelect).selectpicker('refresh');
+        $(customerSelect).selectpicker('val', data.customer_id);
+        $(customerSelect).trigger('change');
+    }
+
+    feather.replace();
+
+    let submitButton = $(submitBtn).click(function (e) {
+        let isValid = $(formId)[0].checkValidity();
+        if (false === isValid) return true;       // true деп қайтармасаң валидацияны көрсетпейді
+        e.preventDefault();
+
+        save.prop('disabled', true);
+        $.post({
+            url: modalUrl,
+            data: $(formId).serialize(),
+            success: function (res, sts, xhr) {
+                /* Бұл жерде кезекші функцияны орындаймыз, ал форма жабылған кезде
+                 * оны стектен алып тастаймыз. Міне енді дұрыс болған сияқты */
+                duty_function[duty_function.length - 1](res);
+                $(modalId).modal('hide');
+            },
+            error: function (xhr, sts, err) {
+                save.prop('disabled', false);
+                alert('Server not response', err);
+            }
+        });
+    });
+
+    let save = $(`${modalId} .modal-footer>.btn-outline-primary`).on('click', function () {
+        submitButton.trigger('click');
+    });
+
+    $(customerSelect).on('change', function() {
+        $.ajax({
+            type: "POST",
+            data: { "customer_id": $(customerSelect).val() },
+            url: "/customer-contacts",
+            success: function(res){
+
+                data = res.data;
+                var option = "<option value=''>...</option>";
+
+                for (i=0; i<data.length; i++) {
+                    option = option + "<option value='" + data[i].contact_id + "'>" + data[i].contact_name + "</option>";
+                }
+
+                $(contactSelect).html(option);
+                $(`${modalId} select.selectpicker`).selectpicker('refresh');
+            }
+        });
+    });
+
+    $(btnCustomerAdd).on('click', 'button', function () {
+        customer_id = $(customerSelect).selectpicker('val');
+        console.log('customer_id: ' + (customer_id || 'add'));
+        if(customer_id) {
+            duty_function.push(update_after_close);
+            getPage('modal_container2', 'modal-edit-customer', customer_id);
+        } else {
+            duty_function.push(add_after_close);
+            getPage('modal_container2', 'modal-add-customer');
+        }
+    });
+
+    $(`${modalId} select.selectpicker`).selectpicker('refresh');
+
+
+    /*
+     *      Модалды браузерге жүктелгеннен кейін
+     *      бірден ашылып тұруын қамтамасыз етеді
+     */
+    $(`${modalId}`).modal('show');
+    console.log('modal-add-request АШылған кездегі duty_function');
+    console.log(duty_function);
+
+    /*  Save арқылы шыққандағы жоғарыда тұр, ал мынау Close арқылы шыққандағысы */
+    $(`${modalId}`).on('hidden.bs.modal', function () {
+        $(`${modalId}`).parent().html(null);
+        duty_function.pop();
+        console.log('modal-add-request ЖАБылған кездегі duty_function');
+        console.log(duty_function);
+    });
+
+})();
+
+</script>

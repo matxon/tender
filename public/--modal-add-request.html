@@ -1,0 +1,209 @@
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Новая заявка</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- ******************************************************************************* -->
+
+  <form id="send-form" action="" method="POST">
+
+    <div class="form-group">
+
+      <div class="row">
+        <label class="col-1 col-form-label text-right font-weight-bold" for="start_date">Дата</label>
+        <div class="col-2">
+          <input name="start_date" id="start_date" placeholder="" type="date" class="form-control form-control-sm" required><small class="text-info"></small>
+        </div>
+        <label class="col-1 col-form-label text-right font-weight-bold" for="end_date">Срок</label>
+        <div class="col-2">
+          <input name="end_date" id="end_date" placeholder="" type="date" class="form-control form-control-sm"><small class="text-info"></small>
+        </div>
+        <label class="col-2 col-form-label text-right font-weight-bold" for="company_id">Компания</label>
+        <div class="col-3">
+          <select class="form-control form-control-sm selectpicker" id="company_id" name="company_id" required>
+            <option value="">Chose...</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="row">
+        <label class="col-1 col-form-label text-right font-weight-bold" for="customer_id">Заказчик</label>
+        <div class="col-4">
+          <select class="form-control form-control-sm selectpicker" data-live-search="true" id="customer_id" name="customer_id" required>
+            <option value="0">Chose...</option>
+          </select>
+        </div>
+        <label class="col-2 col-form-label text-right font-weight-bold" for="contact_id">Заявку отправил</label>
+        <div class="col-4">
+          <select class="form-control form-control-sm selectpicker" id="contact_id" name="contact_id" required>
+            <option value="0">Chose...</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="row">
+        <label class="col-1 col-form-label text-right font-weight-bold" for="tender_name">Закуп</label>
+        <div class="col-10">
+          <input name="tender_name" type="text" id="tender_name" class="form-control form-control-sm" required><small class="text-info"></small>
+        </div>
+      </div>
+    </div>
+
+
+    <table class="table table-sm">
+      <thead class="thead-dark">
+        <tr class="row">
+          <!-- <th>#</th> -->
+          <th class="col-1">Stock Code</th>
+          <th class="col text-center">Наименование товара</th>
+          <th class="col-1">Ед.изм.</th>
+          <th class="col-1">Кол-во</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+        <tr id="template" class="row">
+          <td class="col-1"><input name="stock_code" type="text" class="form-control form-control-sm"></td>
+          <td class="col"><input name="name" type="text" class="form-control form-control-sm" required></td>
+          <td class="col-1"><input name="unit" type="text" class="form-control form-control-sm" required></td>
+          <td class="col-1"><input name="qty" type="text" class="form-control form-control-sm" required></td>
+          <td class="align-middle"><span data-feather="trash-2"></span></td>
+        </tr>
+        <tr id="addButton">
+          <td colspan="7" class="text-right">
+            <a class="btn btn-sm btn-outline-secondary" href="#" role="button">еще...</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button type="submit" id="submit_button" name="submit" hidden></button>
+  </form>
+        <!-- ******************************************************************************* -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-outline-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  feather.replace();
+
+  $("td>.btn").click( function() {
+    tableRow = "<tr class='row'>" +
+          '<td class="col-1"><input name="stock_code" type="text" class="form-control form-control-sm"></td>' +
+          '<td class="col"><input name="name" type="text" class="form-control form-control-sm" required></td>' +
+          '<td class="col-1"><input name="unit" type="text" class="form-control form-control-sm" required></td>' +
+          '<td class="col-1"><input name="qty" type="text" class="form-control form-control-sm" required></td>' +
+          '<td class="align-middle"><span data-feather="trash-2"></span></td></tr>';
+    $("#addButton").before(tableRow);
+    feather.replace();
+    return false;
+  });
+
+
+  $("#tbody").on("click", "svg", function() {
+      $(this).parent().parent().remove();
+      console.log(this);
+
+  });
+
+  var submitButton = $('#submit_button');
+
+  submitButton.click(function (e) {
+
+    isValid = $('#send-form')[0].checkValidity();
+
+    if (false === isValid) return true;
+    // true деп қайтармасаң валидацияны көрсетпейді
+    e.preventDefault();
+
+    $.post({
+      url: '/request-add',
+      data: $('#send-form').serialize(),
+      success: function (res, sts, xhr) {
+        //$(container + ' ' + modalname).modal('hide');
+        console.log('success');
+        $('#staticBackdrop').modal('hide');
+
+        request_table.ajax.reload(table_cb);
+      },
+      error: function (xhr, sts, err) {
+        alert('Server not response', err);
+      }
+    });
+  });
+
+  $('.modal-footer>.btn-outline-primary').on('click', function () {
+    submitButton.trigger('click');
+  });
+
+  $('#staticBackdrop').modal('show');
+
+  $.ajax({
+    type: "POST",
+    url: "/companies-view",
+    success: function(res){
+
+      data = res.data;
+      var option = "<option value=''>Chose...</option>";
+
+      for (i=0; i<data.length; i++) {
+        option = option + "<option value='" + data[i].company_id + "'>" + data[i].company_name + "</option>";
+      }
+
+      $('#company_id').html(option);
+    }
+  });
+
+  $.ajax({
+    type: "POST",
+    url: "/customers-view",
+    success: function(res){
+
+      data = res.data;
+      var option = "<option value=''>Chose...</option>";
+
+      for (i=0; i<data.length; i++) {
+        option = option + "<option value='" + data[i].customer_id + "'>" + data[i].customer_name + "</option>";
+      }
+
+      $('#customer_id').html(option);
+        $('select').selectpicker();
+    }
+  });
+
+  $('#customer_id').on('change', function() {
+    $.ajax({
+      type: "POST",
+      data: { "customer_id": $('#customer_id').val() },
+      url: "/customer-contacts",
+      success: function(res){
+
+        data = res.data;
+        var option = "<option value=''>Chose...</option>";
+
+        for (i=0; i<data.length; i++) {
+          option = option + "<option value='" + data[i].contact_id + "'>" + data[i].contact_name + "</option>";
+        }
+
+        $('#contact_id').html(option);
+          $('select').selectpicker('refresh');
+      }
+    });
+  });
+
+
+</script>

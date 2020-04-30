@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<%- include ("./common/head") %>
+<body>
+<%- include ("./common/header") %>
+
+<div class="container-fluid">
+    <div class="row">
+        <%# include ("./common/nav.ejs")%>
+        <main id="main" role="main" class="col px-4">
+        </main>
+    </div>
+</div>
+<!--
+    Кейіндеу серверден шақырып алатын қылып жасайтын болармын
+-->
+<datalist id="carrencylist">
+    <option value="KZT">
+    <option value="RUB">
+    <option value="EUR">
+    <option value="GBP">
+    <option value="USD">
+</datalist>
+
+<datalist id="unitlist">
+    <option value="шт.">
+    <option value="кг.">
+    <option value="м.">
+    <option value="мм.">
+    <option value="т.">
+</datalist>
+
+<script src="./js/jquery.min.js"></script>
+<script src="./js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+<script src="./js/feather-icons/feather.min.js"></script>
+<script src="./js/Chart.min.js"></script>
+
+<script type="text/javascript" src="DataTables/datatables.min.js"></script>
+<script src="./js/jquery.smartWizard.min.js"></script>
+
+<script>
+
+    /*  Бұл localstorage әзірге пайдаланылып тұрған жоқ */
+    let localstorage;
+
+    /*  Бұл функцияны қолданыстан шығарып тастап жатырмын */
+    function _handler(container, document) {
+        container = container || 'main';
+        container = "#" + container;
+        event.preventDefault();       // браузердің обработкасын тоқтатамын
+        $(container).load(document, function (res, sts, xhr) {
+            if (sts === 'error') {
+                alert('Server not response');
+            }
+        });
+
+        return false;   // негізі onclick арқылы болғанда қажеті жоқ болар деп ойлаймын
+        // тексеріп қарау керек
+    }
+
+    /*  Бұл функцияны қолданыстан шығарып тастап жатырмын */
+    function getHtml(container, url, data) {
+
+        $.ajax({
+            url: url,
+            type: "post",
+            data: data,
+            dataType: 'html',
+            success: function (data, textStatus, jqXHR) {
+                //console.log(data);
+                $('#' + container).prepend(data);
+            }
+        })
+
+    }
+
+
+    /*  getPage( container, url, data)  функция url адресі бойынша серверден келген html құжатты #container-дің
+     *  ішіне орналастырады. data {} - серверге жіберілетін мәлімет
+     */
+    function getPage(container, url, data) {
+        container = container || 'main';
+        data = data || '';
+
+        $.ajax({
+            url: url,
+            type: "post",
+            data: {"data": data, "container": container},
+            dataType: 'html',
+            success:
+                function (data, textStatus, jqXHR) {
+                    $(`#${container}`).html(data);
+                    console.log(url);
+                    return true;
+                }
+
+        })
+    }
+
+
+    /*  duty_function функцияслар стегі
+     *  модалды формаларды шақырғанда сол форма жабылған кезде орындалу керек функциялар осы айнымалының ішінде
+     *  сақталады. Стектің принципі бойынша LIFO ең соңғы ашылған modal-form ең бірінші болып жабылады
+     *
+     *  main( func1 ) ----> modal( func1m ) -----> modal( func2m )
+     *    push()                push()              push()
+     *
+     *  main( func1 ) <---- modal( func1m ) <----- modal( func2m )
+     *    pop()                pop()              pop()
+     */
+    let duty_function = [];
+
+    (function () {
+        // Бұл навбарды әзірге ажыратып қойдым
+        //        $('ul.nav>li.nav-item>a').click(function () {
+        //            $('ul.nav>li.nav-item>a').removeClass('active');
+        //            $(this).addClass('active');
+        //        })
+
+        /*  Иконкаларды рендеринг жасау */
+        feather.replace();
+
+        /*  Менде навбар javascript арқылы шақырып алады керекті беттерді
+         *  яғни менюдегі сілтемелрді басқанда серверге адресный строка арқылы GET запрос жіберілмейді
+         *  ол деген сервер браузердің қай бетте тұрғанын білмейді деген сөз.
+         *  Сондықтан клиент өзі қадағалап отырады, оны реттеудің бір ғана жолы javascript арқылы
+         *  сол менюді '.active' класына кіргізуі керек
+         */
+        $('#navbarNav>.navbar-nav>.nav-item').click(function () {
+            $('#navbarNav>.navbar-nav>.nav-item').removeClass('active');
+            $(this).addClass('active');
+        })
+    })()
+
+</script>
+
+</body>
+</html>

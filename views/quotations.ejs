@@ -1,0 +1,74 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Create Quotation</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addRequest()">New</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+        </div>
+        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+            <span data-feather="calendar"></span>
+            This week
+        </button>
+    </div>
+</div>
+<!--http://techlaboratory.net/smartwizard#documentation-->
+<div id="smartwizard">
+    <ul>
+        <li><a href="#step-1">Заявка<br /><small>Оформление заявки</small></a></li>
+        <li><a href="#step-2">Поставщики<br /><small>Выбрать поставщиков</small></a></li>
+        <li><a href="#step-3">Расчет<br /><small>Расчет транспортировки</small></a></li>
+        <li><a href="#step-4">Предложение<br /><small>Формирование ком.предлжения</small></a></li>
+    </ul>
+
+    <div>
+        <div id="step-1" class="mt-4"></div>
+        <div id="step-2" class="mt-1"></div>
+        <div id="step-3" class="mt-1">
+            Step Content
+        </div>
+        <div id="step-4" class="">
+            Step Content
+        </div>
+    </div>
+</div>
+
+<script>
+
+$('#smartwizard').smartWizard({
+    //selected: 0,
+//    useURLhash: false,
+//    showStepURLhash: false,
+    contentURL: '/wizard',
+    keyNavigation: false,
+    ajaxSettings: {
+        method: "post"
+    }
+});
+
+// Initialize the showStep event
+$("#smartwizard").on("showStep", (function() {
+
+    let step1 = true;
+    let step2 = false;
+    let step3 = false;
+    let step4 = false;
+    //handler('step-1','step1.html');
+
+    return function(e, anchorObject, stepNumber, stepDirection) {
+
+//    if (stepNumber == 0 && !step1) {
+//        handler('step-1','step1.html');
+//        step1 = true;
+//    }
+//    if (stepNumber == 1 && !step2) {
+//        getHtml('step-2','/step2', {"count": 1})
+//        getHtml('step-2','/step2', {"count": 2})
+//        step2 = true;
+//    }
+
+}})());
+
+
+
+</script>

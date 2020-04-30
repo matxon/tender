@@ -1,0 +1,66 @@
+<style media="screen">
+  .highlight {
+    font-weight: bold;
+  }
+  .cancel {
+    color: $ccc;
+  }
+  table > tbody > tr {
+    cursor: pointer;
+  }
+</style>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Предприятия</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group mr-2">
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addCompany()">New</button>
+      <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+      <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+    </div>
+
+    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+      <span data-feather="calendar"></span>
+      This week
+    </button>
+  </div>
+</div>
+<!-- <h5>Открытые заказы <small class="text-muted"> Заказды қалай таңдайтынын сұрау керек</small></h5> -->
+<div class="table-responsive">
+  <table id="datatable" class="display table-sm">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Наименование предприятия</th>
+      </tr>
+    </thead>
+  </table>
+</div>
+
+<div id="modal-container"></div>
+
+<script type="text/javascript">
+  feather.replace();
+
+  function addCompany() {
+    handler('modal-container', 'modal-add-company.html');
+  }
+
+
+  $(document).ready(function() {
+      $('#datatable').DataTable( {
+          "lengthChange": false,
+          "lengthMenu": [15],
+          "processing": true,
+          "serverSide": false,
+          "ajax": {
+              "url": "/companies-view",
+              "type": "POST"
+          },
+          "columns": [
+              { "data": "company_id" },
+              { "data": "company_name" }
+          ]
+      } );
+  } );
+</script>

@@ -1,0 +1,166 @@
+<div class="lot">
+    <div class="form-group">
+        <div class="row">
+            <label class="col-1 col-form-label text-right font-weight-bold" for="supplier_id<%=count_%>">Поставщик</label>
+            <div class="col-4 input-group input-group-sm">
+                <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-secondary" id="supplier_id<%=count_%>" name="supplier_id>" required>
+                    <option value="">...</option>
+                </select>
+                <div class="input-group-append" id="supplier-add<%=count_%>">
+                    <button class="btn btn-sm btn-outline-secondary">...</button>
+                </div>
+            </div>
+            <label class="col-1 col-form-label text-right font-weight-bold" for="carrency<%=count_%>">Валюта</label>
+            <div class="col-1">
+                <input type="text" class="form-control form-control-sm" list="carrencylist" id="carrency<%=count_%>" name="carrency" required>
+            </div>
+        </div>
+        <div class="row">
+        </div>
+        <div class="sr-only input-group input-group-sm mt-2">
+            <!--<div class="input-group-prepend">-->
+                <!--<span class="input-group-text" id="inputGroupFileAddon">Загрузить файл</span>-->
+            <!--</div>-->
+            <label class="col-2 col-form-label text-right font-weight-bold">">Загрузите файлы</label>
+            <div class="custom-file col-8">
+                <input type="file" class="custom-file-input" id="inputGroupFile<%=count_%>">
+                <label class="custom-file-label" for="inputGroupFile<%=count_%>">Файл</label>
+                <div class="invalid-feedback">Example invalid custom file feedback</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <table class="table table-sm table-borderless" id="lots<%=count_%>">
+            <thead class="thead-light">
+            <tr class="row">
+                <th class="d-none text-center">#</th>
+                <th class="col-1 text-center">Stock Code</th>
+                <th class="col text-center">Наименование товара</th>
+                <th class="col-1 text-center">Ед.изм.</th>
+                <th class="col-1 text-center">Кол-во</th>
+                <th class="col-1 text-center">Цена</th>
+                <th class="col-1 text-center">Сумма</th>
+                <!--<th></th>-->
+            </tr>
+            </thead>
+            <tbody id="tbody<%=count_%>">
+            <tr class="row">
+                <td class="d-none"><input name="lot_id" type="text" class="form-control form-control-sm" autocomplete="off"></td>
+                <td class="col-1"><input name="stock_code" type="text" class="form-control form-control-sm" autocomplete="off"></td>
+                <td class="col"><input name="name" type="text" class="form-control form-control-sm" autocomplete="off" required></td>
+                <td class="col-1"><input name="unit" type="text" list="unitlist" class="form-control form-control-sm text-center" required></td>
+                <td class="col-1"><input name="qty" type="text" class="form-control form-control-sm text-right" autocomplete="off" required></td>
+                <td class="col-1"><input name="price" type="text" class="form-control form-control-sm text-right" autocomplete="off" required></td>
+                <td class="col-1">
+                    <div class="input-group input-group-sm">
+                        <input name="sum" type="number" class="form-control form-control-sm text-right" autocomplete="off" readonly>
+                        <div class="input-group-append">
+                            <span class="input-group-text"><span data-feather="trash-2"></span></span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr id="addButton<%=count_%>" class="row">
+                <th class="d-none">#</th>
+                <th class="col-1"></th>
+                <th class="col"></th>
+                <th class="col-1"></th>
+                <th class="col-1"></th>
+                <th class="col-1"><input name="" type="text" class="form-control form-control-sm text-right" readonly value="ИТОГО:"></th>
+                <th class="col-1">
+                    <div class="input-group input-group-sm">
+                        <input name="sum" type="number" class="form-control form-control-sm text-right" readonly>
+                        <div class="input-group-append">
+                            <span class="input-group-text"><span data-feather="plus-circle"></span></span>
+                        </div>
+                    </div>
+                </th>
+                <!--<th></th>-->
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <hr>
+
+<script>
+
+feather.replace();
+
+function colsum(elem) {
+    let sum = 0;
+    for( i = 0; i < elem.length; i++ ) {
+        sum += +elem[i].value;
+    }
+    return sum;
+}
+
+$('#tbody<%=count_%>').on('change', 'input', (function() {
+    return function() {
+        tr = $(this).parent().parent();
+        qty = tr.children().get(4).firstElementChild.value;
+        price = tr.children().get(5).firstElementChild.value;
+        $(tr.children().get(6)).find('input').val(qty * price);
+        sum = colsum($('#tbody<%=count%> input[name="sum"]'));
+        $('#addButton<%=count%> input[name="sum"]').val(sum);
+    }
+})());
+
+$.ajax({
+    type: "POST",
+    url: "/suppliers-view",
+    success: function(res){
+
+        data = res.data;
+        let option = "<option value=''>...</option>";
+
+        for (i=0; i<data.length; i++) {
+            option = option + "<option value='" + data[i].supplier_id + "'>" + data[i].supplier_name + "</option>";
+        }
+
+        $('#supplier_id<%=count_%>').html(option);
+
+        $('#supplier_id<%=count_%>').selectpicker();
+    }
+});
+
+$('#addButton<%=count%> svg:first-child').click( function() {
+    tableRow = "<tr class='row'>" +
+        '<td class="d-none"><input name="lot_id" type="text" class="form-control form-control-sm" autocomplete="off"></td>' +
+        '<td class="col-1"><input name="stock_code" type="text" class="form-control form-control-sm" autocomplete="off"></td>' +
+        '<td class="col"><input name="name" type="text" class="form-control form-control-sm" autocomplete="off" required></td>' +
+        '<td class="col-1"><input name="unit" type="text" list="unitlist" class="form-control form-control-sm text-center" required></td>' +
+        '<td class="col-1"><input name="qty" type="text" class="form-control form-control-sm text-right" autocomplete="off" required></td>' +
+        '<td class="col-1"><input name="price" type="text" class="form-control form-control-sm text-right" autocomplete="off" required></td>' +
+        '<td class="col-1"><div class="input-group input-group-sm"><input name="sum" type="number" class="form-control form-control-sm text-right" autocomplete="off" readonly>' +
+        '<div class="input-group-append"><span class="input-group-text"><span data-feather="trash-2"></span></span>' +
+        '</div></div></td></tr>';
+    $("#tbody<%=count_%>").append(tableRow);
+    feather.replace();
+    return false;
+});
+
+
+$("#tbody<%=count_%>").on("click", "svg", function() {
+    $(this).parent().parent().parent().parent().parent().remove();
+    sum = colsum($('#tbody<%=count%> input[name="sum"]'));
+    $('#addButton<%=count%> input[name="sum"]').val(sum);
+});
+
+// Жаңадан поставщикті енгізу үшін ашылған модалды терезе жабылғаннан кейін
+// орындалуы керек функция
+after_close = function (data) {
+    console.log(data);
+    $('#supplier_id<%=count_%>').append(`<option value='${data.supplier_id}'>${data.supplier_name}</option>`);
+    $('#supplier_id<%=count_%>').selectpicker('refresh');
+    $('#supplier_id<%=count_%>').selectpicker('val', data.supplier_id);
+}
+
+$('#supplier-add<%=count_%>').on('click', 'button', function () {
+    getPage('modal_container', 'modal-add-supplier');
+});
+
+</script>
+</div>

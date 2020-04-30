@@ -1,0 +1,133 @@
+<!-- Modal -->
+<div class="modal fade" id="modal-edit-request" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Номер Заявки: <%= tender.tender_id%> </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- ******************************************************************************* -->
+
+  <form id="modal-edit-request-form" action="" method="POST">
+
+    <div class="form-group">
+        <input type="text" class="d-none" name="tender_id" value="<%=tender.tender_id%>">
+        <input type="text" class="d-none" name="link_tender_id" value="<%=tender.link_tender_id%>">
+      <div class="row">
+        <label class="col-1 col-form-label text-right font-weight-bold" for="start_date">Дата</label>
+        <div class="col-2">
+          <input name="start_date" id="start_date" type="date" class="form-control form-control-sm" value="<%= tender.start_date %>" required disabled>
+        </div>
+
+        <label class="col-1 col-form-label text-right font-weight-bold" for="company_id">Компания</label>
+        <div class="col-3">
+          <select class="form-control form-control-sm" id="company_id" name="company_id" value="<%= tender.company_id %>" required>
+            <option value="">...</option>
+              <% for (i = 0; i < company.length; i++) { -%>
+            <option value="<%= company[i].company_id %>" <% if(company[i].company_id==tender.company_id) { %>selected <%}%>><%= company[i].company_name %></option><%} %>
+          </select>
+        </div>
+
+        <label class="col-2 col-form-label text-right font-weight-bold" for="user_id">Менеджер</label>
+        <div class="col-3">
+          <select class="form-control form-control-sm" id="user_id" name="user_id" required>
+            <option value="">...</option>
+              <% for (i = 0; i < user.length; i++) { -%>
+            <option value="<%= user[i].user_id %>" <% if(user[i].user_id == tender.user_id) { %>selected <%}%>><%= user[i].user_name %></option><%} %>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="row">
+        <label class="col-1 col-form-label text-right font-weight-bold" for="end_date">Срок</label>
+        <div class="col-2">
+          <input name="end_date" id="end_date" placeholder="" type="date" class="form-control form-control-sm" value="<%= tender.end_date %>">
+        </div>
+        <label class="col-1 col-form-label text-right font-weight-bold" for="customer_id">Заказчик</label>
+        <div class="col-3">
+          <select class="form-control form-control-sm" id="customer_id" name="customer_id" value="<%=tender.customer_id%>" required disabled>
+            <option value="">...</option>
+            <option value="<%= customer.customer_id %>" selected><%= customer.customer_name %></option>
+          </select>
+        </div>
+        <label class="col-2 col-form-label text-right font-weight-bold" for="contact_id">Заявку отправил</label>
+        <div class="col-3">
+          <select class="form-control form-control-sm" id="contact_id" name="contact_id" required>
+            <option value="">...</option>
+              <% for (i = 0; i < contact.length; i++) { -%>
+              <option value="<%= contact[i].contact_id %>" <% if(contact[i].contact_id == tender.contact_id) { %>selected <%}%>><%= contact[i].contact_name %></option><%} %>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="row">
+        <label class="col-1 col-form-label text-right font-weight-bold" for="tender_name">Закуп</label>
+        <div class="col-10">
+          <input name="tender_name" type="text" id="tender_name" class="form-control form-control-sm" value="<%=tender.tender_name%>" required><small class="text-info"></small>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" id="submit-modal-edit-request-form" name="submit" hidden></button>
+  </form>
+        <!-- ******************************************************************************* -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-outline-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    feather.replace();
+
+    $("#tbody").on("click", "svg", function () {
+        $(this).parent().parent().remove();
+    });
+
+    var submitButton = $('#submit-modal-edit-request-form');
+
+    submitButton.click(function (e) {
+
+        isValid = $('#modal-edit-request-form')[0].checkValidity();
+
+        if (false === isValid) return true;
+        // true деп қайтармасаң валидацияны көрсетпейді
+        e.preventDefault();
+
+        $.post({
+            url: '/request-save',
+            data: $('#modal-edit-request-form').serialize(),
+            success: function (res, sts, xhr) {
+
+                $('#modal-edit-request').modal('hide');
+                duty_function.pop()(res);
+            },
+            error: function (xhr, sts, err) {
+                alert('Server not response', err);
+            }
+        });
+    });
+
+    $('.modal-footer>.btn-outline-primary').on('click', function () {
+        submitButton.trigger('click');
+    });
+
+    $('select.selectpicker').selectpicker('refresh');
+
+    $('#modal-edit-request').modal('show');
+
+    //$('#staticBackdrop').on('hidden.bs.modal', function(e) {
+    // Бұл модал жабылғаннан кейінгі евент
+    //      alert('hidden');
+    //});
+</script>

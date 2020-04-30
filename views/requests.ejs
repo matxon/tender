@@ -1,0 +1,131 @@
+<style media="screen">
+    table > tbody > tr {
+        cursor: pointer;
+    }
+
+    div.dt-buttons {
+        float: none;
+        padding-bottom: 1rem;
+    }
+</style>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Заявки</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addRequest()">New</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+        </div>
+        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+            <span data-feather="calendar"></span>
+            This week
+        </button>
+    </div>
+</div>
+
+<div class="">
+    <table id="requesttable" class="display table-sm">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Дата</th>
+            <!--<th>Срок</th>-->
+            <th>Наименование закупки</th>
+            <th>Заказчик</th>
+            <th>Отправил</th>
+            <th>Менеджер</th>
+            <th>Компания</th>
+            <th>Статус</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+
+
+<div id="modal_container"></div>
+<div id="modal_container2"></div>
+
+<script>
+    /*  Төмендегі үш функция requests веб парақшасының жұмыс істеуіне қажетті функциялар
+     *  Кейіннен шақырылып алынатын модалдар пайдаланатын болғандықтан функцияның ішіне
+     *  кіргізбедім
+     */
+    function addRequest() {
+        duty_function.push(request_after_close);
+        getPage('modal_container', '/modal-add-request');
+        console.log('open modal-ADD-request');
+    }
+
+    function editRequest(arg) {
+        duty_function.push(request_after_close);
+        getPage('modal_container', '/modal-edit-request', arg);
+        console.log('open modal-EDIT-request');
+    }
+
+    function table_cb() {
+        $('#requesttable tr').click( function () {
+            editRequest($(this).find('td').first().text());
+        });
+    }
+
+    function request_after_close(data) {
+        console.log('request_after_close from requests.ejs')
+        request_table.ajax.reload(table_cb);
+    }
+
+    /*  тек қана request веб парақшасының өзі ғана пайдаланатын функциялар
+     *  Мұндағы айнымалылар басқалар үшін көрінбеуі керек сондықтан өз алдына функцияның ішіне кіргізіп қойдым
+     */
+(function(){
+
+    let table = '#requesttable';
+
+    feather.replace();
+
+    /*  DataTable options:
+     *  {
+     *      lengthChange: boolean           Таблицадағы қатарлардың санын таңдау мүмкіндігі
+     *      select: boolean                 Таблица жолдарын белгілей алу мүмкіндігі
+     *      ...
+     *      "createdRow": function(row, data, index) {
+     *          f(data.status == "Новый") {
+     *              $(row).css('font-weight','bold');
+     *       },
+     *      "initComplete": table_cb
+     *  }
+     */
+    request_table = $(table).DataTable(
+    {
+        "stateSave": true,
+        "lengthMenu": [7, 15, 19],
+        "processing": true,
+        "serverSide": false,
+        "ajax": {
+            "url": "/requests-view",
+            "type": "POST"
+        },
+        "dom": 'B<"clear">flrtip',
+        "buttons": [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        "columns": [
+            { "data": "tender_id" },
+            { "data": "start_date" },
+            /*{ "data": "end_date" },*/
+            { "data": "tender_name" },
+            { "data": "customer_name" },
+            { "data": "contact_name" },
+            { "data": "user_name" },
+            { "data": "company_name" },
+            { "data": "status" }
+        ],
+        "createdRow": function(row, data, index) {
+        },
+        "initComplete": table_cb
+    });
+
+})()
+</script>
+
+
+

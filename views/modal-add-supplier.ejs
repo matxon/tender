@@ -1,0 +1,148 @@
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Новый Поставщик</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- ******************************************************************************* -->
+
+  <form id="send-form" action="" method="POST">
+
+    <div class="form-group">
+      <div class="row">
+
+        <label class="col-2 col-form-label text-right font-weight-bold" for="supplier_name">Компания</label>
+        <div class="col-4">
+          <input name="supplier_name" id="supplier_name" placeholder="" type="text" class="form-control form-control-sm" required><small class="text-info"></small>
+        </div>
+
+        <label class="col-2 col-form-label text-right font-weight-bold" for="web_address">WEB адрес</label>
+        <div class="col-3">
+          <input name="web_address" type="text" id="web_address" class="form-control form-control-sm" placeholder=""><small class="text-info"></small>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="row">
+        <label class="col-2 col-form-label text-right font-weight-bold" for="profile">Деятельность</label>
+        <div class="col-9">
+          <input name="profile" type="text" id="profile" class="form-control form-control-sm"><small class="text-info"></small>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="row">
+        <label class="col-2 col-form-label text-right font-weight-bold" for="address">Адрес</label>
+        <div class="col-9">
+          <input name="address" type="text" class="form-control form-control-sm" required>
+        </div>
+      </div>
+    </div>
+
+    <table class="table table-sm table-borderless">
+      <thead class="thead-dark">
+        <tr class="row text-center">
+          <th class="col-3">Должность</th>
+          <th class="col-3">ФИО</th>
+          <th class="col-2">email</th>
+          <th class="col">моб.</th>
+          <th class="col">тел.</th>
+          <!--<th></th>-->
+        </tr>
+      </thead>
+      <tbody id="tbody">
+        <tr id="template" class="row">
+          <td class="col-3"><input name="position[]" type="text" class="form-control form-control-sm"></td>
+          <td class="col-3"><input name="name[]" type="text" class="form-control form-control-sm" required></td>
+          <td class="col-2"><input name="email[]" type="text" class="form-control form-control-sm"></td>
+          <td class="col"><input name="mobile[]" type="text" class="form-control form-control-sm"></td>
+          <td class="col">
+            <div class="input-group input-group-sm">
+              <input name="tel[]" type="text" class="form-control form-control-sm">
+              <div class="input-group-append">
+                <span class="input-group-text"><span data-feather="trash-2"></span></span>
+              </div>
+            </div>
+          </td>
+          <!--<td class="align-middle"><span data-feather="trash-2"></span></td>-->
+        </tr>
+        <tr id="addButton">
+          <td colspan="7" class="text-right">
+            <a class="btn btn-sm btn-outline-secondary mt-2" href="#" role="button">еще...</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button type="submit" id="submit_button" name="submit" hidden></button>
+  </form>
+        <!-- ******************************************************************************* -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-outline-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  feather.replace();
+
+  $("td>.btn").click( function() {
+    tableRow = "<tr class='row'><td class='col-3'><input name='position[]' type='text' class='form-control form-control-sm'></td>" +
+          '<td class="col-3"><input name="name[]" type="text" class="form-control form-control-sm" required></td>' +
+          '<td class="col-2"><input name="email[]" type="text" class="form-control form-control-sm"></td>' +
+          '<td class="col"><input name="mobile[]" type="text" class="form-control form-control-sm"></td>' +
+          '<td class="col"><div class="input-group input-group-sm"><input name="tel[]" type="text" class="form-control form-control-sm">' +
+          '<div class="input-group-append"><span class="input-group-text"><span data-feather="trash-2"></span></span></div></div></td></tr>';
+    $("#addButton").before(tableRow);
+    feather.replace();
+    return false;
+  });
+
+
+  $("#tbody").on("click", "svg", function() {
+      $(this).parent().parent().parent().parent().parent().remove();
+  });
+
+  var submitButton = $('#submit_button');
+
+  submitButton.click(function (e) {
+
+    isValid = $('#send-form')[0].checkValidity();
+
+    if (false === isValid) return true;
+    // true деп қайтармасаң валидацияны көрсетпейді
+    e.preventDefault();
+
+    $.post({
+      url: '/supplier-add',
+      data: $('#send-form').serialize(),
+      success: function (res, sts, xhr) {
+          // Осы модалды терезені шақырған объектідегі
+          // функцияны орындау
+          // default: after_close(res);
+          after_close(res.data);
+          $('#staticBackdrop').modal('hide');
+
+      },
+      error: function (xhr, sts, err) {
+        alert('Server not response', err);
+      }
+    });
+  });
+
+  $('.modal-footer>.btn-outline-primary').on('click', function () {
+      submitButton.trigger('click');
+    });
+
+  $('#staticBackdrop').modal('show');
+</script>

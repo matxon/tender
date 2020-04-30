@@ -1,0 +1,387 @@
+<div class="quotation-calculate" id="quotation-calculate<%=count_%>">
+    <div class="form-group">
+        <div class="row mb-2">
+            <label class="col-1 col-form-label text-right font-weight-bold" for="supplier_id3<%=count_%>">Поставщик</label>
+            <div class="col-4">
+                <select class="form-control form-control-sm" id="supplier_id3<%=count_%>" name="supplier_id>" required>
+                    <option value="">Choose...</option>
+                </select>
+            </div>
+            <label class="col-1 col-form-label text-right font-weight-bold" for="calculate<%=count_%>">Транспортировка</label>
+            <div class="col-1">
+                <select class="form-control form-control-sm" id="calculate<%=count_%>" name="calculate" required>
+                    <option value="1">По Казахстану</option>
+                    <option value="2">По СНГ</option>
+                    <option value="3">Международная</option>
+                </select>
+            </div>
+            <label class="col-1 col-form-label text-right font-weight-bold" for="carrency3<%=count_%>">Валюта</label>
+            <div class="col-1">
+                <input type="text" class="form-control form-control-sm" id="carrency3<%=count_%>" name="carrency" readonly required>
+            </div>
+            <div class="col">
+                <a href="#" id="r1" class="btn btn-sm btn-outline-secondary" role="button">Таможенные данные</a>
+                <a href="#" id="r2" class="btn btn-sm btn-outline-secondary" role="button">Пошлины и др. расходы</a>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-1 col-form-label text-right font-weight-bold" for="address<%=count_%>">Адрес забора</label>
+            <div class="col-4">
+                <input type="text" class="form-control form-control-sm" id="address<%=count_%>" name="address" required>
+            </div>
+            <label class="col-1 col-form-label text-right font-weight-bold" for="delivery<%=count_%>">Срок доставки</label>
+            <div class="col-1">
+                <input type="text" class="form-control form-control-sm" id="delivery<%=count_%>" name="delivery" required>
+            </div>
+            <label class="col-1 col-form-label text-right font-weight-bold" for="formailization<%=count_%>">Срок офор-я</label>
+            <div class="col-1">
+                <input type="text" class="form-control form-control-sm" id="formailization<%=count_%>" name="formailization" required>
+            </div>
+        </div>
+        <div class="d-none input-group input-group-sm mt-2">
+            <label class="col-1 col-form-label text-right font-weight-bold">Загрузите файлы</label>
+            <div class="col-2">
+                <input type="file" class="form-control form-control-sm" id="inputGroupFile3<%=count_%>">
+                <label class="custom-file-label" for="inputGroupFile3<%=count_%>">Файл</label>
+                <div class="invalid-feedback">Example invalid custom file feedback</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <table class="table table-sm table-borderless" id="lots<%=count_%>">
+            <thead class="thead-light">
+            <tr class="row">
+                <th rowspan="2" class="d-none">#</th>
+                <!--<th class="col-1">Stock Code</th>-->
+                <th rowspan="2" class="col text-center"></th>
+                <th rowspan="2" class="text-center" style="width: 60px"></th>
+                <th rowspan="2" class="text-center r1" style="width: 110px"></th>
+                <th rowspan="2" class="text-center r1" style="width: 110px"></th>
+                <th rowspan="2" class="text-center r1" style="width: 110px"></th>
+                <th rowspan="2" class="text-center r1" style="width: 110px"></th>
+                <th class="text-center r1" style="width: 110px">Тр.расходы</th>
+                <th class="text-center r1 kz" style="width: 110px">В тенге</th>
+                <th class="text-center r2 kz su" style="width: 110px">Импорт</th>
+                <th class="text-center r2 kz su" style="width: 110px">Сертификат</th>
+                <th class="text-center r2 kz su" style="width: 110px">Гос.рег.</th>
+                <th class="text-center r2 kz su" style="width: 110px">Др.проц.</th>
+                <th class="text-center r2 kz su" style="width: 110px">Брокер/СВХ</th>
+                <th class="text-center r2" style="width: 110px">НДС</th>
+                <th class="text-center" style="width: 110px"></th>
+                <th class="text-center" style="width: 110px">Розн.реал.</th>
+                <th class="text-center" style="width: 110px"></th>
+            </tr>
+            <tr class="row">
+                <th class="d-none">#</th>
+                <!--<th class="col-1">Stock Code</th>-->
+                <th class="col text-center">Наименование</th>
+                <th class="text-center" style="width: 60px">Кол-во</th>
+                <th class="text-center r1" style="width: 110px">Сумма</th>
+                <th class="text-center r1" style="width: 110px">ТН ВЭД</th>
+                <th class="text-center r1" style="width: 110px">Пол.вес,кг</th>
+                <th class="text-center r1" style="width: 110px">(ШхВхД),мм</th>
+                <th class="text-center r1" style="width: 110px">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control form-control-sm" id="transport<%=count_%>" name="transport" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">%</span>
+                        </div>
+                    </div>
+                </th>
+                <th class="text-center r1 kz" style="width: 110px">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control form-control-sm" id="course<%=count_%>" name="course" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">тг.</span>
+                        </div>
+                    </div>
+                </th>
+                <th class="text-center r2 kz su" style="width: 110px">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control form-control-sm" id="import<%=count_%>" name="import" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">%</span>
+                        </div>
+                    </div>
+                </th>
+                <th class="text-center r2 kz su" style="width: 110px">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control form-control-sm" id="sertificate<%=count_%>" name="sertificate" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">%</span>
+                        </div>
+                    </div>
+                </th>
+                <th class="text-center r2 kz su" style="width: 110px">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control form-control-sm" id="registration<%=count_%>" name="registration" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">%</span>
+                        </div>
+                    </div>
+                </th>
+                <th class="text-center r2 kz su" style="width: 110px">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control form-control-sm" id="other<%=count_%>" name="other" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">%</span>
+                        </div>
+                    </div>
+                </th>
+                <th class="text-center r2 kz su" style="width: 110px">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control form-control-sm" id="broker<%=count_%>" name="broker" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">%</span>
+                        </div>
+                    </div>
+                </th>
+                <th class="text-center r2" style="width: 110px">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control form-control-sm" id="tax<%=count_%>" name="tax" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">%</span>
+                        </div>
+                    </div>
+                </th>
+                <th class="text-center" style="width: 110px">Себес-ть</th>
+                <th class="text-center" style="width: 110px">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control form-control-sm" id="sale<%=count_%>" name="sale" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">%</span>
+                        </div>
+                    </div>
+                </th>
+                <th class="text-center" style="width: 110px">Сум.реал.</th>
+            </tr>
+            </thead>
+            <tbody id="tbody3<%=count_%>">
+            <tr id="template3<%=count_%>" class="row">
+                <td class="d-none"><input name="lot_id" type="text" class="form-control form-control-sm"></td>
+                <!--<td class="col-1"><input name="stock_code" type="text" class="form-control form-control-sm"></td>-->
+                <td class="col"><input name="name" type="text" class="form-control form-control-sm" readonly required></td>
+                <td class="" style="width: 60px"><input name="qty" type="number" class="form-control form-control-sm text-right" readonly required></td>
+                <td class="r1" style="width: 110px"><input name="sum" type="text" class="form-control form-control-sm text-center" readonly required></td>
+                <td class="r1" style="width: 110px"><input name="tnbed" type="number" class="form-control form-control-sm text-right" required></td>
+                <td class="r1" style="width: 110px"><input name="weight" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r1" style="width: 110px"><input name="dimensions" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r1" style="width: 110px"><input name="transport" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r1 kz" style="width: 110px"><input name="sumkz" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="import" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="sertificate" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="registration" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="other" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="broker" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2" style="width: 110px"><input name="tax" type="number" class="form-control form-control-sm text-right" readonly></td>
+                <td class="" style="width: 110px"><input name="sale" type="number" class="form-control form-control-sm text-right" readonly></td>
+                <td class="" style="width: 110px"><input name="" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="" style="width: 110px"><input name="" type="number" class="form-control form-control-sm text-right" readonly></td>
+            </tr>
+            <tr id="template3<%=count_%>" class="row">
+                <td class="d-none"><input name="lot_id" type="text" class="form-control form-control-sm"></td>
+                <!--<td class="col-1"><input name="stock_code" type="text" class="form-control form-control-sm"></td>-->
+                <td class="col"><input name="name" type="text" class="form-control form-control-sm" readonly required></td>
+                <td class="" style="width: 60px"><input name="qty" type="number" class="form-control form-control-sm text-right" readonly required></td>
+                <td class="r1" style="width: 110px"><input name="sum" type="text" class="form-control form-control-sm text-center" readonly required></td>
+                <td class="r1" style="width: 110px"><input name="tnbed" type="number" class="form-control form-control-sm text-right" required></td>
+                <td class="r1" style="width: 110px"><input name="weight" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r1" style="width: 110px"><input name="dimensions" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r1" style="width: 110px"><input name="transport" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r1 kz" style="width: 110px"><input name="sumkz" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="import" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="sertificate" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="registration" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="other" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="broker" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2" style="width: 110px"><input name="tax" type="number" class="form-control form-control-sm text-right" readonly></td>
+                <td class="" style="width: 110px"><input name="sale" type="number" class="form-control form-control-sm text-right" readonly></td>
+                <td class="" style="width: 110px"><input name="" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="" style="width: 110px"><input name="" type="number" class="form-control form-control-sm text-right" readonly></td>
+            </tr>
+            <tr id="template3<%=count_%>" class="row">
+                <td class="d-none"><input name="lot_id" type="text" class="form-control form-control-sm"></td>
+                <!--<td class="col-1"><input name="stock_code" type="text" class="form-control form-control-sm"></td>-->
+                <td class="col"><input name="name" type="text" class="form-control form-control-sm" readonly required></td>
+                <td class="" style="width: 60px"><input name="qty" type="number" class="form-control form-control-sm text-right" readonly required></td>
+                <td class="r1" style="width: 110px"><input name="sum" type="text" class="form-control form-control-sm text-center" readonly required></td>
+                <td class="r1" style="width: 110px"><input name="tnbed" type="number" class="form-control form-control-sm text-right" required></td>
+                <td class="r1" style="width: 110px"><input name="weight" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r1" style="width: 110px"><input name="dimensions" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r1" style="width: 110px"><input name="transport" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r1 kz" style="width: 110px"><input name="sumkz" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="import" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="sertificate" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="registration" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="other" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="broker" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2" style="width: 110px"><input name="tax" type="number" class="form-control form-control-sm text-right" readonly></td>
+                <td class="" style="width: 110px"><input name="sale" type="number" class="form-control form-control-sm text-right" readonly></td>
+                <td class="" style="width: 110px"><input name="" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="" style="width: 110px"><input name="" type="number" class="form-control form-control-sm text-right" readonly></td>
+            </tr>
+            <tr id="template3<%=count_%>" class="row">
+                <td class="d-none"><input name="lot_id" type="text" class="form-control form-control-sm"></td>
+                <!--<td class="col-1"><input name="stock_code" type="text" class="form-control form-control-sm"></td>-->
+                <td class="col"><input name="name" type="text" class="form-control form-control-sm" readonly required></td>
+                <td class="" style="width: 60px"><input name="qty" type="number" class="form-control form-control-sm text-right" readonly required></td>
+                <td class="r1" style="width: 110px"><input name="sum" type="text" class="form-control form-control-sm text-center" readonly required></td>
+                <td class="r1" style="width: 110px"><input name="tnbed" type="number" class="form-control form-control-sm text-right" required></td>
+                <td class="r1" style="width: 110px"><input name="weight" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r1" style="width: 110px"><input name="dimensions" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r1" style="width: 110px"><input name="transport" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r1 kz" style="width: 110px"><input name="sumkz" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="import" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="sertificate" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="registration" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="other" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="broker" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2" style="width: 110px"><input name="tax" type="number" class="form-control form-control-sm text-right" readonly></td>
+                <td class="" style="width: 110px"><input name="sale" type="number" class="form-control form-control-sm text-right" readonly></td>
+                <td class="" style="width: 110px"><input name="" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="" style="width: 110px"><input name="" type="number" class="form-control form-control-sm text-right" readonly></td>
+            </tr>
+            <tr id="template3<%=count_%>" class="row">
+                <td class="d-none"><input name="lot_id" type="text" class="form-control form-control-sm"></td>
+                <!--<td class="col-1"><input name="stock_code" type="text" class="form-control form-control-sm"></td>-->
+                <td class="col"><input name="name" type="text" class="form-control form-control-sm" readonly required></td>
+                <td class="" style="width: 60px"><input name="qty" type="number" class="form-control form-control-sm text-right" readonly required></td>
+                <td class="r1" style="width: 110px"><input name="sum" type="text" class="form-control form-control-sm text-center" readonly required></td>
+                <td class="r1" style="width: 110px"><input name="tnbed" type="number" class="form-control form-control-sm text-right" required></td>
+                <td class="r1" style="width: 110px"><input name="weight" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r1" style="width: 110px"><input name="dimensions" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r1" style="width: 110px"><input name="transport" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r1 kz" style="width: 110px"><input name="sumkz" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="import" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="sertificate" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="registration" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="other" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="broker" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2" style="width: 110px"><input name="tax" type="number" class="form-control form-control-sm text-right" readonly></td>
+                <td class="" style="width: 110px"><input name="sale" type="number" class="form-control form-control-sm text-right" readonly></td>
+                <td class="" style="width: 110px"><input name="" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="" style="width: 110px"><input name="" type="number" class="form-control form-control-sm text-right" readonly></td>
+            </tr>
+            <tr id="template3<%=count_%>" class="row">
+                <td class="d-none"><input name="lot_id" type="text" class="form-control form-control-sm"></td>
+                <!--<td class="col-1"><input name="stock_code" type="text" class="form-control form-control-sm"></td>-->
+                <td class="col"><input name="name" type="text" class="form-control form-control-sm" readonly required></td>
+                <td class="" style="width: 60px"><input name="qty" type="number" class="form-control form-control-sm text-right" readonly required></td>
+                <td class="r1" style="width: 110px"><input name="sum" type="text" class="form-control form-control-sm text-center" readonly required></td>
+                <td class="r1" style="width: 110px"><input name="tnbed" type="number" class="form-control form-control-sm text-right" required></td>
+                <td class="r1" style="width: 110px"><input name="weight" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r1" style="width: 110px"><input name="dimensions" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r1" style="width: 110px"><input name="transport" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r1 kz" style="width: 110px"><input name="sumkz" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="import" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="sertificate" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="registration" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="other" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2 kz su" style="width: 110px"><input name="broker" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="r2" style="width: 110px"><input name="tax" type="number" class="form-control form-control-sm text-right" readonly></td>
+                <td class="" style="width: 110px"><input name="sale" type="number" class="form-control form-control-sm text-right" readonly></td>
+                <td class="" style="width: 110px"><input name="" type="number" class="form-control form-control-sm text-right"></td>
+                <td class="" style="width: 110px"><input name="" type="number" class="form-control form-control-sm text-right" readonly></td>
+            </tr>
+            </tbody>
+            <tfoot class="thead-light">
+            <tr id="template3<%=count_%>" class="row">
+                <th class="d-none"></th>
+                <!--<th class="col-1"><input name="stock_code" type="text" class="form-control form-control-sm"></th>-->
+                <th class="col"></th>
+                <th class="" style="width: 60px"></th>
+                <th class="r1" style="width: 110px"><input name="" type="number" class="form-control form-control-sm text-right" readonly></th>
+                <th class="r1" style="width: 110px"></th>
+                <th class="r1" style="width: 110px"></th>
+                <th class="r1" style="width: 110px"></th>
+                <th class="r1" style="width: 110px"><input name="" type="number" class="form-control form-control-sm text-right"></th>
+                <th class="r1 kz" style="width: 110px"><input name="" type="number" class="form-control form-control-sm text-right" readonly></th>
+                <th class="r2 kz su" style="width: 110px"><input name="" type="number" class="form-control form-control-sm text-right"></th>
+                <th class="r2 kz su" style="width: 110px"><input name="" type="number" class="form-control form-control-sm text-right"></th>
+                <th class="r2 kz su" style="width: 110px"><input name="" type="number" class="form-control form-control-sm text-right"></th>
+                <th class="r2 kz su" style="width: 110px"><input name="" type="number" class="form-control form-control-sm text-right"></th>
+                <th class="r2 kz su" style="width: 110px"><input name="" type="number" class="form-control form-control-sm text-right"></th>
+                <th class="r2" style="width: 110px"></th>
+                <th class="" style="width: 110px"></th>
+                <th class="" style="width: 110px"><input name="" type="number" class="form-control form-control-sm text-right"></th>
+                <th class="" style="width: 110px"><input name="" type="number" class="form-control form-control-sm text-right" readonly></th>
+            </tr>
+            <tr class="row">
+                <th rowspan="2" class="d-none">#</th>
+                <!--<th class="col-1">Stock Code</th>-->
+                <th class="col text-center">Наименование</th>
+                <th class="text-center" style="width: 60px">Кол-во</th>
+                <th class="text-center r1" style="width: 110px">В валюте</th>
+                <th class="text-center r1" style="width: 110px">ТН ВЭД</th>
+                <th class="text-center r1" style="width: 110px">Пол.вес</th>
+                <th class="text-center r1" style="width: 110px">(ШхВхД)</th>
+                <th class="text-center r1" style="width: 110px">Тр.расходы</th>
+                <th class="text-center r1 kz" style="width: 110px">В тенге</th>
+                <th class="text-center r2 kz su" style="width: 110px">Импорт</th>
+                <th class="text-center r2 kz su" style="width: 110px">Сертификат</th>
+                <th class="text-center r2 kz su" style="width: 110px">Гос.рег.</th>
+                <th class="text-center r2 kz su" style="width: 110px">Др.проц.</th>
+                <th class="text-center r2 kz su" style="width: 110px">Брокер/СВХ</th>
+                <th class="text-center r2" style="width: 110px">НДС</th>
+                <th class="text-center" style="width: 110px">Себес-ть</th>
+                <th class="text-center" style="width: 110px">Розн.реал.</th>
+                <th class="text-center" style="width: 110px">ИТОГО</th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <hr>
+
+<script>
+
+feather.replace();
+
+$.ajax({
+    type: "POST",
+    url: "/suppliers-view",
+    success: function(res){
+
+    data = res.data;
+    var option = "<option value=''>...</option>";
+
+    for (i=0; i<data.length; i++) {
+    option = option + "<option value='" + data[i].supplier_id + "'>" + data[i].supplier_name + "</option>";
+    }
+
+    $('#supplier_id3<%=count_%>').html(option);
+
+    $('#supplier_id3<%=count_%>').selectpicker();
+    }
+});
+
+$('#quotation-calculate<%=count%> .table .r2').addClass('d-none');
+
+$('#quotation-calculate<%=count%> #r1').click(function () {
+    $('#quotation-calculate<%=count%> .table .r2').addClass('d-none');
+    $('#quotation-calculate<%=count%> .table .r1').removeClass('d-none');
+    return false;
+})
+
+$('#quotation-calculate<%=count%> #r2').click(function () {
+    $('#quotation-calculate<%=count%> .table .r1').addClass('d-none');
+    $('#quotation-calculate<%=count%> .table .r2').removeClass('d-none');
+    return false;
+})
+
+$('#quotation-calculate<%=count%> .kz input').prop('disabled', true);
+
+$('#calculate<%=count%>').on('change', function () {
+    //console.log(this.value);
+    if (this.value == '1') {
+        $('#quotation-calculate<%=count%> .kz input').prop('disabled',true);
+    } else if (this.value == '2') {
+        $('#quotation-calculate<%=count%> .kz input').prop('disabled',false);
+        $('#quotation-calculate<%=count%> .su input').prop('disabled',true);
+    } else if (this.value == '3') {
+        $('#quotation-calculate<%=count%> .kz input').prop('disabled',false);
+    }
+})
+
+</script>
+</div>

@@ -1,60 +1,59 @@
     var mysql = require( 'mysql' );
     var pool = mysql.createPool({
     // var pool = mysql.createConnection({
-        connectionLimit : 10,
+        connectionLimit : 100,
         host: 'localhost',
         user: 'root',
         password: 'DbyljeC3',
-        database: 'pipe'
+        database: 'zhaltur'
     });
 
     // connection.connect();
 
 module.exports.read = function(sql, cb) {
     pool.getConnection(function(err, connection) {
-        if(err) {
-            console.log(err); 
-            cb({error: 'error'});
-            return;
-        }
+        if(err) { throw err }
 
         connection.query( sql, function( error, result, fields ) {
             connection.release();
-            if( error ) {
-                console.log( error );
-                cb({error: 'error'});
-                return;
-            }
+            if( error ) { throw error }
             cb(result);
         });
     });
-}
+};
+
+module.exports.query = function(sql, data, cb) {
+    pool.getConnection(function(err, connection) {
+        if(err) { throw err }
+
+        connection.query( sql, data, function( error, result, fields ) {
+            if( error ) { console.log(error); throw error }
+            connection.release();
+            cb(result);
+        });
+
+    });
+};
 
 module.exports.insert = function(sql, data, cb) {
     pool.getConnection(function(err, connection) {
-        if(err) {
-            console.log(err); 
-            cb({error: 'error'});
-            return;
-        }
+        if(err) { throw err }
 
         data.forEach( function( item ) {
             connection.query( sql, item, function( error, result, fields ) {
-                if( error ) {
-                    console.log( error );
-                    cb({error: 'error'});
-                    return;
-                }
+                if( error ) { console.log(error); throw error }
                 cb(result);
             });
         });
         connection.release();
     });
-}
+};
+
+module.exports.transaction = function() {return pool};
 
 
 /*
-var data = [ 
+var data = [
     { name: "Ералиев Арман", position: 'Начальник партии' },
     { name: 'Бисалиев Рустем', position: 'Начальник партии' }
 ];
@@ -81,4 +80,3 @@ connection.query( 'select * from employees', function ( err, rows, fields ) {
     console.log( rows );
 });
 */
-

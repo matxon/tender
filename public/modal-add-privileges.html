@@ -1,0 +1,135 @@
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Новый пользователь</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- ******************************************************************************* -->
+
+  <form id="send-form" action="" method="post">
+
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label font-weight-bold text-right" for="user_name">Доступ</label>
+      <div class="col-sm-8">
+        <input name="user_name" id="user_name" placeholder="" type="text" class="form-control form-control-sm" required><small class="text-info"></small>
+      </div>
+    </div>
+    <table class="table table-sm">
+      <thead class="thead-dark">
+        <tr class="row">
+          <th class="col text-center">Таблицы</th>
+          <th class="col text-center">Добавление</th>
+          <th class="col text-center"">Редактирование</th>
+          <th class="col text-center"">Чтение</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="row">
+          <td class="col">Users</td>
+          <td class="col text-center"><input type="checkbox"></td>
+          <td class="col text-center"><input type="checkbox"></td>
+          <td class="col text-center"><input type="checkbox"></td>
+        </tr>
+        <tr class="row">
+          <td class="col">Companies</td>
+          <td class="col text-center"><input type="checkbox"></td>
+          <td class="col text-center"><input type="checkbox"></td>
+          <td class="col text-center"><input type="checkbox"></td>
+        </tr>
+        <tr class="row">
+          <td class="col">Customers</td>
+          <td class="col text-center"><input type="checkbox"></td>
+          <td class="col text-center"><input type="checkbox"></td>
+          <td class="col text-center"><input type="checkbox"></td>
+        </tr>
+        <tr class="row">
+          <td class="col">Suppliers</td>
+          <td class="col text-center"><input type="checkbox"></td>
+          <td class="col text-center"><input type="checkbox"></td>
+          <td class="col text-center"><input type="checkbox"></td>
+        </tr>
+        <tr class="row">
+          <td class="col">Orders</td>
+          <td class="col text-center"><input type="checkbox"></td>
+          <td class="col text-center"><input type="checkbox"></td>
+          <td class="col text-center"><input type="checkbox"></td>
+        </tr>
+        <tr class="row">
+          <td class="col">Logistics</td>
+          <td class="col text-center"><input type="checkbox"></td>
+          <td class="col text-center"><input type="checkbox"></td>
+          <td class="col text-center"><input type="checkbox"></td>
+        </tr>
+        <tr class="row">
+          <td class="col">Proposals</td>
+          <td class="col text-center"><input type="checkbox"></td>
+          <td class="col text-center"><input type="checkbox"></td>
+          <td class="col text-center"><input type="checkbox"></td>
+        </tr>
+      </tbody>
+    </table>
+    <button type="submit" id="submit_button" name="submit" hidden></button>
+  </form>
+        <!-- ******************************************************************************* -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-outline-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  feather.replace();
+
+  var submitButton = $('#submit_button');
+
+  submitButton.click(function (e) {
+
+    isValid = $('#send-form')[0].checkValidity();
+
+    if (false === isValid) return true;
+    // true деп қайтармасаң валидацияны көрсетпейді
+    e.preventDefault();
+
+    $.post({
+      url: '/user-add',
+      data: $('#send-form').serialize(),
+      success: function (res, sts, xhr) {
+        //$(container + ' ' + modalname).modal('hide');
+        console.log('success');
+      },
+      error: function (xhr, sts, err) {
+        alert('Server not response', err);
+      }
+    });
+  });
+
+  $('.modal-footer>.btn-outline-primary').on('click', function () {
+      submitButton.trigger('click');
+    });
+
+  $.ajax({
+    type: "post",
+    url: "/companies-view",
+    success: function(res){
+
+      data = res.data;
+      var option = "<option value=''>Chose...</option>";
+
+      for (i=0; i<data.length; i++) {
+        option = option + "<option value='" + data[i].company_id + "'>" + data[i].company_name + "</option>";
+      }
+
+      $('#company_id').html(option);
+    }
+  });
+
+  $('#staticBackdrop').modal('show');
+</script>

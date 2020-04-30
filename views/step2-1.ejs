@@ -1,0 +1,20 @@
+<a href="#" id="btnSupplierMinus" class="btn btn-sm btn-outline-primary">-</a>
+<a href="#" id="btnSupplierPlus" class="btn btn-sm btn-outline-primary">+</a>
+<div id="step2-lots" class="mb-2 mt-2"></div>
+<div id="modal_container"></div>
+
+<script>
+
+    $('#btnSupplierMinus').click(function () {
+
+        $('#step2-lots > .lot:first-child').remove();
+    });
+
+    $('#btnSupplierPlus').click((function(){
+        let count = 0;
+        return function () {
+            getHtml('step2-lots', '/step2', {count: count });
+            count++;
+        }
+    })())
+</script>
