@@ -104,15 +104,17 @@
         // true деп қайтармасаң валидацияны көрсетпейді
         e.preventDefault();
 
+      save.prop('disabled', true);
         $.post({
             url: '/request-save',
             data: $('#modal-edit-request-form').serialize(),
             success: function (res, sts, xhr) {
 
                 $('#modal-edit-request').modal('hide');
-                duty_function.pop()(res);
+                duty_function[duty_function.length - 1](res);
             },
             error: function (xhr, sts, err) {
+                save.prop('disabled', false);
                 alert('Server not response', err);
             }
         });
@@ -125,9 +127,13 @@
     $('select.selectpicker').selectpicker('refresh');
 
     $('#modal-edit-request').modal('show');
+    console.log('modal-add-request АШылған кездегі duty_function');
+    console.log(duty_function);
 
-    //$('#staticBackdrop').on('hidden.bs.modal', function(e) {
-    // Бұл модал жабылғаннан кейінгі евент
-    //      alert('hidden');
-    //});
+    $('#modal-edit-request').on('hidden.bs.modal', function(e) {
+      $('#modal-edit-request').parent().empty();
+      duty_function.pop();
+      console.log('modal-add-request ЖАБылған кездегі duty_function');
+      console.log(duty_function);
+    });
 </script>

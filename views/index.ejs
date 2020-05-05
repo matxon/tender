@@ -8,6 +8,7 @@
     <div class="row">
         <%# include ("./common/nav.ejs")%>
         <main id="main" role="main" class="col px-4">
+            <% if(page) { %><%- include (page) %><% } %>
         </main>
     </div>
 </div>
@@ -38,32 +39,17 @@
 
 <script type="text/javascript" src="DataTables/datatables.min.js"></script>
 <script src="./js/jquery.smartWizard.min.js"></script>
+<!-- Include jQuery Validator plugin -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
 
 <script>
 
-$(document).ready(function() {
-
-    /*  егер айнымалының алдына let, var, const директиваларын қоймайтын болсаң онда
-     *  сол айнымалы global объектісіне барып жазылады.
-     *  Функцияларды да global объектісіне дәл осылай жазуға болады
-     *      f_name = function() {...}
-     *
-     *  Бұл localstorage әзірге пайдаланылып тұрған жоқ */
-    let localstorage = null;
-
-    /*  Бұл функцияны қолданыстан шығарып тастап жатырмын */
-    function _handler(container, document) {
-        container = container || 'main';
-        container = "#" + container;
-        event.preventDefault();       // браузердің обработкасын тоқтатамын
-        $(container).load(document, function (res, sts, xhr) {
-            if (sts === 'error') {
-                alert('Server not response');
-            }
-        });
-
-        return false;   // негізі onclick арқылы болғанда қажеті жоқ болар деп ойлаймын
-        // тексеріп қарау керек
+    /* DataTable үшін барлығына ортақ опциялары */
+    opt = {
+        lengthMenu: [7, 15, 19],
+        stateSave: true,
+        processing: true,
+        serverSide: false
     }
 
     /*  Бұл функцияны қолданыстан шығарып тастап жатырмын */
@@ -79,16 +65,14 @@ $(document).ready(function() {
                 $('#' + container).prepend(data);
             }
         })
-
     }
 
 
-    /* global function
-     *
-     * getPage( container, url, data)  функция url адресі бойынша серверден келген html құжатты #container-дің
+    /*
+     *  getPage( container, url, data)  функция url адресі бойынша серверден келген html құжатты #container-дің
      *  ішіне орналастырады. data {} - серверге жіберілетін мәлімет
      */
-    getPage = function (container, url, data) {
+    getPage = function (container, url, data, cb) {
         container = container || 'main';
         data = data || '';
 
@@ -99,11 +83,13 @@ $(document).ready(function() {
             dataType: 'html',
             success:
                 function (data, textStatus, jqXHR) {
-                    $(`#${container}`).html(data);
+                    $(`#${container}`).append(data);
                     console.log(url);
-                    return true;
+                },
+            complete:
+                function() {
+                    if( typeof(cb) === 'function') cb()
                 }
-
         })
     }
 
@@ -120,28 +106,8 @@ $(document).ready(function() {
      */
     duty_function = [];
 
-    // Бұл навбарды әзірге ажыратып қойдым
-    //        $('ul.nav>li.nav-item>a').click(function () {
-    //            $('ul.nav>li.nav-item>a').removeClass('active');
-    //            $(this).addClass('active');
-    //        })
-
-    /*  Иконкаларды рендеринг жасау */
-    feather.replace();
-
-    /*  Менде навбар javascript арқылы шақырып алады керекті беттерді
-     *  яғни менюдегі сілтемелрді басқанда серверге адресный строка арқылы GET запрос жіберілмейді
-     *  ол деген сервер браузердің қай бетте тұрғанын білмейді деген сөз.
-     *  Сондықтан клиент өзі қадағалап отырады, оны реттеудің бір ғана жолы javascript арқылы
-     *  сол менюді '.active' класына кіргізуі керек
-     */
-    $('#navbarNav>.navbar-nav>.nav-item').click(function () {
-        $('#navbarNav>.navbar-nav>.nav-item').removeClass('active');
-        $(this).addClass('active');
-    })
-
-})
 </script>
 
+<script src="./js/<%= page %>.js"></script>
 </body>
 </html>

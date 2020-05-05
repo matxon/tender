@@ -196,7 +196,7 @@
 
     /*  Save арқылы шыққандағы жоғарыда тұр, ал мынау Close арқылы шыққандағысы */
     $(`${modalId}`).on('hidden.bs.modal', function () {
-        $(`${modalId}`).parent().html(null);
+        $(`${modalId}`).parent().empty();
         duty_function.pop();
         console.log('modal-add-request ЖАБылған кездегі duty_function');
         console.log(duty_function);

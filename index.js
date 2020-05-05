@@ -36,47 +36,51 @@ const escapeHtml = (function () {
     };
 }());
 
-
-
-/*
- login
- TODO:
-        1. Public-те index.html тұрған кезде бұл роутер жұмыс істемейді
-           сондықтан html генератор арқылы жасау керек
-        2. Генератор салынды.
-*/
-
 data = {
     title: "OrdersBase",
     nav: {
         item: ['Dashboard', 'Requests', 'Quotations', 'Purchase Orders', 'Customers', 'Companies', 'Users', 'Privileges'],
         icon: ['home', 'file', 'shopping-cart', 'shopping-bag', 'users', 'bar-chart-2', 'layers', 'lock'],
-        script: ['demo', 'requests', 'quotations', 'dashboard.html', 'customers', 'companies.html', 'users', 'privileges.html' ],
-        current: 0  // осы қасиеттін алып тастауға болады
+        script: ['demo', 'requests', 'quotations', 'dashboard.html', 'customers', 'companies.html', 'users', 'privileges.html' ]
     }
 }
 
 app.get('/', function( req, res ) {
 
     if( req.session && req.session.login) {
-        console.log(req.url);
-        res.render('index', data);
+        data.page = '';
+        res.render( 'index', data );
     }
     else {
-        console.log(req.url);
-        res.render('login', data);
+        res.render( 'login', data );
     }
 });
 
-app.post('/demo', function (req,res) {
-    console.log(req.url);
-    res.render('demo');
+/* Уақытша тұр */
+app.get('/demo', function (req,res) {
+    data.page = 'demo'
+    res.render('index', data);
 })
 
-app.post('/requests', function (req,res) {
+app.get('/requests', (req,res) => {
+    data.page = 'requests'
+    res.render('index', data);
+});
+
+app.get('/quotations', (req,res) => {
+    data.page = 'quotations'
+    res.render('index', data);
+});
+
+app.post('/wizard', function (req, res) {
     console.log(req.url);
-    res.render('requests');
-})
+    step = req.body.step_number;
+    if ( step == 0) res.render('step1');
+    if ( step == 1) res.render('step2-1');
+    if ( step == 2) res.render('step3-1', {count: 1});
+    if ( step == 3) res.send('step 4');
+});
+
 
 app.post('/customers', function (req,res) {
     console.log(req.url);
@@ -88,10 +92,6 @@ app.post('/users', function (req,res) {
     res.render('users');
 })
 
-app.post('/quotations', function (req,res) {
-    console.log(req.url);
-    res.render('quotations');
-})
 
 /*
  * TODO
@@ -125,15 +125,6 @@ app.post('/step3', function (req, res) {
     let count = req.body.count;
     console.log(req.url);
     res.render('step3', {count: count});
-});
-
-app.post('/wizard', function (req, res) {
-    console.log(req.url);
-    step = req.body.step_number;
-    if ( step == 0) res.render('step1');
-    if ( step == 1) res.render('step2-1');
-    if ( step == 2) res.render('step3-1', {count: 1});
-    if ( step == 3) res.send('step 4');
 });
 
 app.post('/step2-1', function (req, res) {

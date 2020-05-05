@@ -1,18 +1,8 @@
-<style media="screen">
-    table > tbody > tr {
-        cursor: pointer;
-    }
-
-    div.dt-buttons {
-        float: none;
-        padding-bottom: 1rem;
-    }
-</style>
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Заявки</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group mr-2">
-            <button id="new-request" type="button" class="btn btn-sm btn-outline-secondary">New</button>
+            <button id="new" type="button" class="btn btn-sm btn-outline-secondary">New</button>
             <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
             <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
         </div>
@@ -24,7 +14,7 @@
 </div>
 
 <div class="">
-    <table id="requesttable" class="display table-sm">
+    <table id="datatable" class="display table-sm">
         <thead>
         <tr>
             <th>#</th>
@@ -44,116 +34,3 @@
 
 <div id="modal_container"></div>
 <div id="modal_container2"></div>
-
-<script>
-
-$(document).ready(function(){
-
-    /*  Төмендегі үш функция requests веб парақшасының жұмыс істеуіне қажетті функциялар
-     *  Кейіннен шақырылып алынатын модалдар пайдаланатын болғандықтан функцияның ішіне
-     *  кіргізбедім
-     */
-    function addRequest() {
-        duty_function.push(request_after_close);
-        getPage('modal_container', '/modal-add-request');
-        console.log('open modal-ADD-request');
-    }
-
-    function editRequest(arg) {
-        duty_function.push(request_after_close);
-        getPage('modal_container', '/modal-edit-request', arg);
-        console.log('open modal-EDIT-request');
-    }
-
-    function table_cb() {
-        $('#requesttable tr').click( function () {
-            editRequest($(this).find('td').first().text());
-        });
-    }
-
-    /*  Кнөпкіге event байлау
-     *  Мұның бәрін не үшін жасап жатырмын? Менде интернет беттері бөлек-бөлек шақырылып алатындықтан
-     *  ондағы скриптілер бір-бірімен конфликтіге келіп қалмас үшін жасап жатырмын
-     */
-    $('#new-request').click(addRequest);
-
-    /*  Ал мына обработчик таза тәжірибе үшін жасалып отыр, осы request-тің орнына басқа бет жүктелгеннен
-     *  кейін обработчик жойылып кетеді ме жоқ қалып қояды ма, соны білу үшін
-     *
-     *  Тәжірибе нәтижесі:
-     *      Request парақшасы неше рет шақырылса, сонша обработчик ілінетінін байқадым. Басқа амалын табу керек.
-     *
-     *  Амал:
-     *      Менің бастапқы жоспарым бойынша алғашқыда index.ejs шақырылып алынады да басқа парақшалар қажет болған
-     *      жағдайда меню арқылы жүктеледі, сол жүктелген парақшамен бірге оның өз обработчиктері келеді.
-     *      Енді қазір байқап отырмын оным қате түсінік екенін, өйткені сол парақшадағы скриптілердің копиялары
-     *      паметте көбейе береді де ақырғы соңында программаның жәй істеп қалуына, тіпті тоқтап қалуына әкеліп
-     *      соғатынына сенемдімін. Ондай кездері интернет парақшасын әлсін-әлсін перезагрузка жасап тұру керек
-     *      болады.
-     *      Сондықтан әр парақшаның өз URL адресі болуы тиіс деп ойлаймын
-     */
-    $('#signout').click(function() {
-        alert('Sign out кнөпкісі Request-те тұрған жерінен басылды');
-    })
-
-
-    function request_after_close(data) {
-        console.log('request_after_close from requests.ejs')
-        request_table.ajax.reload(table_cb);
-    }
-
-    /*  тек қана request веб парақшасының өзі ғана пайдаланатын функциялар
-     *  Мұндағы айнымалылар басқалар үшін көрінбеуі керек сондықтан өз алдына функцияның ішіне кіргізіп қойдым
-     */
-
-    let table = '#requesttable';
-
-    feather.replace();
-
-    /*  DataTable options:
-     *  {
-     *      lengthChange: boolean           Таблицадағы қатарлардың санын таңдау мүмкіндігі
-     *      select: boolean                 Таблица жолдарын белгілей алу мүмкіндігі
-     *      ...
-     *      "createdRow": function(row, data, index) {
-     *          f(data.status == "Новый") {
-     *              $(row).css('font-weight','bold');
-     *       },
-     *      "initComplete": table_cb
-     *  }
-     */
-    request_table = $(table).DataTable(
-    {
-        "stateSave": true,
-        "lengthMenu": [7, 15, 19],
-        "processing": true,
-        "serverSide": false,
-        "ajax": {
-            "url": "/requests-view",
-            "type": "POST"
-        },
-        "dom": 'B<"clear">flrtip',
-        "buttons": [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-        ],
-        "columns": [
-            { "data": "tender_id" },
-            { "data": "start_date" },
-            /*{ "data": "end_date" },*/
-            { "data": "tender_name" },
-            { "data": "customer_name" },
-            { "data": "contact_name" },
-            { "data": "user_name" },
-            { "data": "company_name" },
-            { "data": "status" }
-        ],
-        "createdRow": function(row, data, index) {
-        },
-        "initComplete": table_cb
-    });
-
-})
-</script>
-
-
-
