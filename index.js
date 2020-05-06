@@ -132,12 +132,14 @@ app.post('/step2-1', function (req, res) {
     res.render('step2-1');
 });
 
-// tender-view
+/* tender-view
+ * tender_id | start_date | end_date | customer_name | contact_name | user_name | company_name | status
+ * ----------|------------|----------|---------------|--------------|-----------|--------------|------- */
 app.post('/requests-view', ( req, res ) => {
     let query = "select tender_id,date_format(start_date, '%d.%m.%Y') as start_date, " +
         "date_format(end_date, '%d.%m.%Y') as end_date,tender_name,customer_name,contact_name,user_name,company_name,status " +
         "from tenders join customers on tenders.customer_id = customers.customer_id join contacts on tenders.contact_id = contacts.contact_id " +
-        "join companies on tenders.company_id = companies.company_id " +
+        "left join companies on tenders.company_id = companies.company_id " +
         "left join users on tenders.user_id = users.user_id ";
     mysql.read(query, function(result) {
         console.log(req.url);
@@ -145,13 +147,15 @@ app.post('/requests-view', ( req, res ) => {
     });
 });
 
-// tenders-view for smartWizard
+/* tenders-view for smartWizard
+ * tender_id | concat(start_date, tender_name) as tender_name
+ * ----------|------------------------------------------------ */
 app.post('/tenders-view', function ( req, res ) {
     let sql = "select tender_id, concat(date_format(start_date, '%d-%m-%Y'),' ', tender_name) as tender_name from tenders";
 
     mysql.read( sql, function ( result ) {
         console.log(req.url);
-        res.send({data: result});
+        res.send({ "data": result});
     });
 });
 
@@ -165,15 +169,15 @@ app.post('/suppliers-view', function ( req, res ) {
     });
 });
 
+ /*  Жаңа заявканы енгізгенде форма осы сілтемеге лақтырады
+  *     start_date  |    customer_id    |  contact_id   |     tender_name
+  *  ---------------|-------------------|---------------|---------------------- */
 app.post('/request-add', function( req, res ) {
     console.log(req.url);
     console.log(req.body);      // debug
     let data = req.body;
     let tender = [{
         start_date: escapeHtml(data.start_date),
-        end_date: escapeHtml(data.end_date) || null,
-        company_id: escapeHtml(data.company_id),
-        user_id: escapeHtml(data.user_id),
         customer_id: escapeHtml(data.customer_id),
         contact_id: escapeHtml(data.contact_id),
         tender_name: escapeHtml(data.tender_name)
@@ -226,8 +230,8 @@ app.post('/request-save', function (req, res) {
 
     tender = {
         //start_date: escapeHtml(data.start_date),                  // becouse start_date attribute is disabled
-        end_date: escapeHtml(data.end_date) || null,
-        company_id: escapeHtml(data.company_id),
+        //end_date: escapeHtml(data.end_date) || null,
+        //company_id: escapeHtml(data.company_id),
         //customer_id: escapeHtml(data.customer_id),                // customer_is is disabled
         contact_id: escapeHtml(data.contact_id),
         user_id: escapeHtml(data.user_id),

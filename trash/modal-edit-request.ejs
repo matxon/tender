@@ -22,6 +22,15 @@
           <input name="start_date" id="start_date" type="date" class="form-control form-control-sm" value="<%= tender.start_date %>" required disabled>
         </div>
 
+        <label class="col-1 col-form-label text-right font-weight-bold" for="company_id">Компания</label>
+        <div class="col-3">
+          <select class="form-control form-control-sm" id="company_id" name="company_id" value="<%= tender.company_id %>" required>
+            <option value="">...</option>
+              <% for (i = 0; i < company.length; i++) { -%>
+            <option value="<%= company[i].company_id %>" <% if(company[i].company_id==tender.company_id) { %>selected <%}%>><%= company[i].company_name %></option><%} %>
+          </select>
+        </div>
+
         <label class="col-2 col-form-label text-right font-weight-bold" for="user_id">Менеджер</label>
         <div class="col-3">
           <select class="form-control form-control-sm" id="user_id" name="user_id" required>
@@ -35,7 +44,10 @@
 
     <div class="form-group">
       <div class="row">
-
+        <label class="col-1 col-form-label text-right font-weight-bold" for="end_date">Срок</label>
+        <div class="col-2">
+          <input name="end_date" id="end_date" placeholder="" type="date" class="form-control form-control-sm" value="<%= tender.end_date %>">
+        </div>
         <label class="col-1 col-form-label text-right font-weight-bold" for="customer_id">Заказчик</label>
         <div class="col-3">
           <select class="form-control form-control-sm" id="customer_id" name="customer_id" value="<%=tender.customer_id%>" required disabled>
@@ -43,7 +55,7 @@
             <option value="<%= customer.customer_id %>" selected><%= customer.customer_name %></option>
           </select>
         </div>
-        <label class="col-1 col-form-label text-right font-weight-bold" for="contact_id">Отправитель</label>
+        <label class="col-2 col-form-label text-right font-weight-bold" for="contact_id">Заявку отправил</label>
         <div class="col-3">
           <select class="form-control form-control-sm" id="contact_id" name="contact_id" required>
             <option value="">...</option>

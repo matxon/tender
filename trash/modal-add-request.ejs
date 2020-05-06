@@ -22,6 +22,32 @@
                                 <input name="start_date" id="start_date" type="date" class="form-control form-control-sm" value="" required>
                             </div>
 
+                            <label class="col-1 col-form-label text-right font-weight-bold" for="company_id">Компания</label>
+                            <div class="col-3">
+                                <select class="form-control form-control-sm selectpicker" data-style="btn-secondary" id="company_id" name="company_id" value="" required>
+                                    <option value="">...</option>
+                                    <% for (i = 0; i < company.length; i++) { -%>
+                                    <option value="<%=company[i].company_id_%>"><%= company[i].company_name %></option><% } %>
+                                </select>
+                            </div>
+
+                            <label class="col-2 col-form-label text-right font-weight-bold" for="user_id">Менеджер</label>
+                            <div class="col-3">
+                                <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-secondary" id="user_id" name="user_id" required>
+                                    <option value="">...</option>
+                                    <% for (i = 0; i < user.length; i++) { -%>
+                                    <option value="<%=user[i].user_id_%>"><%= user[i].user_name %></option><% } %>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-1 col-form-label text-right font-weight-bold" for="end_date">Срок</label>
+                            <div class="col-2">
+                                <input name="end_date" id="end_date" placeholder="" type="date" class="form-control form-control-sm" value="">
+                            </div>
                             <label class="col-1 col-form-label text-right font-weight-bold" for="customer_id">Заказчик</label>
                             <div class="col-3 input-group input-group-sm">
                                 <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-secondary" id="customer_id" name="customer_id" value="" required>
@@ -33,15 +59,13 @@
                                     <button class="btn btn-sm btn-outline-secondary" type="button">...</button>
                                 </div>
                             </div>
-
-                            <label class="col-1 col-form-label text-right font-weight-bold" for="contact_id">Отправитель</label>
+                            <label class="col-2 col-form-label text-right font-weight-bold" for="contact_id">Заявку отправил</label>
                             <div class="col-3">
                                 <select class="form-control form-control-sm selectpicker" data-style="btn-secondary" id="contact_id" name="contact_id" required>
                                     <option value="">...</option>
 
                                 </select>
                             </div>
-
                         </div>
                     </div>
 
@@ -101,8 +125,8 @@
 
     feather.replace();
 
-    const submitButton = $(submitBtn).click(function (e) {
-        const isValid = $(formId)[0].checkValidity();
+    let submitButton = $(submitBtn).click(function (e) {
+        let isValid = $(formId)[0].checkValidity();
         if (false === isValid) return true;       // true деп қайтармасаң валидацияны көрсетпейді
         e.preventDefault();
 
@@ -123,7 +147,7 @@
         });
     });
 
-    const save = $(`${modalId} .modal-footer>.btn-outline-primary`).on('click', function () {
+    let save = $(`${modalId} .modal-footer>.btn-outline-primary`).on('click', function () {
         submitButton.trigger('click');
     });
 
