@@ -10,47 +10,40 @@
     </div>
 
     <div class="offset-1 custom-file_">
-        <input type="file" class="" id="customFile">
+        <label for="customFile" class="btn btn-sm btn-outline-secondary" role="button">Файл</label>
+        <input type="file" class="d-none" id="customFile" multiple>
     </div>
     <div class="row my-2">
 
-        <div class="col-9 offset-1">
+        <div class="col-9 offset-1"></div>
 
-            <div class="card mr-1 mt-1">
-                <button type="button" class="close text-right" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <div class="card-container">
-                    <img src="./img/jpeg128.png" class="" alt="...">       <!-- filetype icon -->
-                    <div class="progress d-none">                           <!-- progress-bar -->
-                        <div class="progress-bar" role="progressbar" style="width: 88%" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                </div>
-                <div class="card-body my-card-body">
-                    <p class="card-text text-center text-truncate">filename.txt</p> <!-- filename -->
-                </div>
-            </div>
-
-        </div>
     </div>
 </div>
 
 <script>
 !function() {
 
-    $('#customFile').on('change', function(){
-        console.log(this.value)
-        const filename = this.files[0].name;
-        let filetype = filename.split('.');
-        filetype = (filetype.length > 1) ? filetype.pop() : 'readme';
-        filetype = `./img/${filetype}128.png`;
-        const card = '<div class="card mr-1 mt-1"><button type="button" class="close text-right" aria-label="Close">' +
-        `<span aria-hidden="true">&times;</span></button><div class="card-container"><img src="${filetype}" class="" alt="...">` +
-        '<div class="progress d-none"><div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>' +
-        `</div></div><div class="card-body my-card-body"><p class="card-text text-center text-truncate">${filename}</p></div></div>`;
+    const input = $('#customFile').on('change', function(){
+        console.log(this.files)
+        for( const key in this.files) {
+            if(key == 'length') break;
+            let filename = this.files[key].name;
+            let filetype = filename.split('.');
+            filetype = (filetype.length > 1) ? filetype.pop() : 'readme';
+            filetype = `./img/${filetype}128.png`;
+            const card = '<div class="card mr-1 mt-1"><button type="button" class="close text-right" aria-label="Close" onclick="removeCard(event)">' +
+            `<span aria-hidden="true">&times;</span></button><div class="card-container"><img src="${filetype}" class="" alt="...">` +
+            '<div class="progress d-none"><div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>' +
+            `</div></div><div class="card-body my-card-body"><p class="card-text text-center text-truncate">${filename}</p></div></div>`;
 
-        $('.col-9.offset-1').append(card);
+            $('.col-9.offset-1').append(card);
+        }
     })
+
+    removeCard = function(e) {
+        $(e.target).parent().parent().remove();
+        $('#customFile').val('');
+    }
 
     $.ajax({
         type: "POST",
