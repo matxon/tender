@@ -23,6 +23,24 @@
 <script>
 !function() {
 
+    document.addEventListener("upload", function(event) {
+        console.log("Привет от " + event.target.tagName);
+        let count = 0;
+        const card = $(event.target);
+        let img = card.find('img');
+        let progress = card.find('.progress');
+        let timer = setInterval(function() {
+            if (count==100) {
+                setTimeout(() => {
+                    img.removeClass('d-none');
+                    progress.addClass('d-none');
+                    clearInterval(timer);
+                }, 20);
+            } else progress.find('.progress-bar').css('width', ++count + '%');
+        }, 200)
+
+    });
+
     const input = $('#customFile').on('change', function(){
         console.log(this.files)
         for( const key in this.files) {
@@ -31,12 +49,15 @@
             let filetype = filename.split('.');
             filetype = (filetype.length > 1) ? filetype.pop() : 'readme';
             filetype = `./img/${filetype}128.png`;
-            const card = '<div class="card mr-1 mt-1"><button type="button" class="close text-right" aria-label="Close" onclick="removeCard(event)">' +
-            `<span aria-hidden="true">&times;</span></button><div class="card-container"><img src="${filetype}" class="" alt="...">` +
-            '<div class="progress d-none"><div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>' +
-            `</div></div><div class="card-body my-card-body"><p class="card-text text-center text-truncate">${filename}</p></div></div>`;
+            const card = $('<div class="card mr-1 mt-1"></div>');
+            card.html('<button type="button" class="close text-right" aria-label="Close" onclick="removeCard(event)">' +
+            `<span aria-hidden="true">&times;</span></button><div class="card-container"><img src="${filetype}" class="d-none" alt="...">` +
+            '<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>' +
+            `</div></div><div class="card-body my-card-body"><p class="card-text text-center text-truncate">${filename}</p></div>`);
 
             $('.col-9.offset-1').append(card);
+            card[0].dispatchEvent(new Event('upload', {bubbles: true}));
+            //card.trigger(jQuery.Event('upload', { bubbless: true }));
         }
     })
 
