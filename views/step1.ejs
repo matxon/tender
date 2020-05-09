@@ -11,7 +11,7 @@
 
     <div class="offset-1 custom-file_">
         <label for="customFile" class="btn btn-sm btn-outline-secondary" role="button">Файл</label>
-        <input type="file" class="d-none" id="customFile" multiple>
+        <input type="file" class="d-none" name="myfiles" id="customFile" multiple>
     </div>
     <div class="row my-2">
 
@@ -22,24 +22,6 @@
 
 <script>
 !function() {
-
-    document.addEventListener("upload", function(event) {
-        console.log("Привет от " + event.target.tagName);
-        let count = 0;
-        const card = $(event.target);
-        let img = card.find('img');
-        let progress = card.find('.progress');
-        let timer = setInterval(function() {
-            if (count==100) {
-                setTimeout(() => {
-                    img.removeClass('d-none');
-                    progress.addClass('d-none');
-                    clearInterval(timer);
-                }, 20);
-            } else progress.find('.progress-bar').css('width', ++count + '%');
-        }, 200)
-
-    });
 
     const input = $('#customFile').on('change', function(){
         console.log(this.files)
@@ -56,8 +38,41 @@
             `</div></div><div class="card-body my-card-body"><p class="card-text text-center text-truncate">${filename}</p></div>`);
 
             $('.col-9.offset-1').append(card);
-            card[0].dispatchEvent(new Event('upload', {bubbles: true}));
-            //card.trigger(jQuery.Event('upload', { bubbless: true }));
+
+            var fd = new FormData();
+            fd.append('myfiles',this.files[key]);
+            $.ajax({
+                url: '/uploadmultiple',
+                type: 'post',
+                data: fd,
+                contentType: false,
+                processData: false,
+                mimeType: 'multipart/form-data',
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
+
+                    xhr.upload.addEventListener("progress", function(evt) {
+                        if (evt.lengthComputable) {
+                            var percentComplete = evt.loaded / evt.total;
+                            percentComplete = parseInt(percentComplete * 100);
+                            console.log(percentComplete);
+
+                            card.find('.progress-bar').css('width', percentComplete + '%');
+                            card.find('.progress-bar').attr('aria-valuenow', percentComplete);
+                        }
+                    }, false);
+                    return xhr;
+                },
+                success: function(response){
+                    if(response != 0){
+                        card.find('img').removeClass('d-none');
+                        card.find('.progress').addClass('d-none');
+                    }else{
+                        alert('file not uploaded');
+                    }
+                },
+            });
+
         }
     })
 

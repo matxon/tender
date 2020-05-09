@@ -6,7 +6,18 @@ const multer     = require('multer');
 
 const app = express();
 const router = express.Router();
-const upload = multer();            //for parsing multipart/form-data
+// const upload = multer();            //for parsing multipart/form-data
+
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, 'uploads');
+    },
+    filename: function(req, file, cb) {
+        cb(null, file.originalname)
+    }
+})
+
+let upload = multer({ storage: storage });
 
 // app.set
 
@@ -44,6 +55,19 @@ data = {
         script: ['demo', 'requests', 'quotations', 'dashboard.html', 'customers', 'companies.html', 'users', 'privileges.html' ]
     }
 }
+
+//upload files
+app.post('/uploadmultiple', upload.array('myfiles', 12), (req,res,next) => {
+    console.log(req.body)
+    const files = req.files
+    if (!files) {
+        const error = new Error('Please choose files')
+        error.httpStatusCode = 400
+        return next(error)
+    }
+
+    res.send(files)
+})
 
 app.get('/', function( req, res ) {
 
